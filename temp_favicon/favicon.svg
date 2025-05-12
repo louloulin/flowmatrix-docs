@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <style>
+      .flow-blue-dark {fill:#2c7a96;}
+      .flow-blue-mid {fill:#3aa4ca;}
+      .flow-blue-light {fill:#7cbbd2;}
+      .matrix-grid {fill:none; stroke:#3aa4ca; stroke-width:3px;}
+      .bg {fill:#ffffff;}
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect class="bg" x="0" y="0" width="256" height="256" rx="32" />
+  
+  <!-- Logo Symbol - Flowing Data and Matrix Grid -->
+  <g id="symbol" transform="translate(28, 28) scale(1.25)">
+    <!-- Matrix Grid Background -->
+    <g id="matrix-grid">
+      <rect class="matrix-grid" x="30" y="60" width="120" height="120" rx="5" />
+      <line class="matrix-grid" x1="60" y1="60" x2="60" y2="180" />
+      <line class="matrix-grid" x1="90" y1="60" x2="90" y2="180" />
+      <line class="matrix-grid" x1="120" y1="60" x2="120" y2="180" />
+      <line class="matrix-grid" x1="30" y1="90" x2="150" y2="90" />
+      <line class="matrix-grid" x1="30" y1="120" x2="150" y2="120" />
+      <line class="matrix-grid" x1="30" y1="150" x2="150" y2="150" />
+    </g>
+    
+    <!-- Flow Elements -->
+    <path class="flow-blue-dark" d="M40,75 Q90,50 140,75 T140,135 Q90,160 40,135 T40,75" />
+    <path class="flow-blue-mid" d="M50,85 Q90,65 130,85 T130,125 Q90,145 50,125 T50,85" />
+    <path class="flow-blue-light" d="M60,95 Q90,80 120,95 T120,115 Q90,130 60,115 T60,95" />
+  </g>
+</svg>

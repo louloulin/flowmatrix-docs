@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlowMatrix Logo Preview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        .logo-row {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .logo-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .dark {
+            background-color: #333;
+            color: white;
+        }
+        .light {
+            background-color: #f5f5f5;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+        h1, h2 {
+            color: #3aa4ca;
+        }
+        img {
+            max-width: 100%;
+        }
+        .favicon {
+            width: 32px;
+            height: 32px;
+        }
+    </style>
+</head>
+<body>
+    <h1>FlowMatrix Logo Preview</h1>
+    
+    <div class="logo-container">
+        <h2>Full Logo</h2>
+        <div class="logo-row">
+            <div class="logo-item light">
+                <h3>Light Background</h3>
+                <img src="logo/light.svg" alt="FlowMatrix Logo (Light)">
+            </div>
+            <div class="logo-item dark">
+                <h3>Dark Background</h3>
+                <img src="logo/dark.svg" alt="FlowMatrix Logo (Dark)">
+            </div>
+        </div>
+        
+        <h2>Favicon</h2>
+        <div class="logo-row">
+            <div class="logo-item light">
+                <h3>Light Background</h3>
+                <img class="favicon" src="temp_favicon/favicon.svg" alt="FlowMatrix Favicon">
+            </div>
+        </div>
+    </div>
+    
+    <h2>Logo Description</h2>
+    <p>
+        The FlowMatrix logo represents the dual nature of the platform:
+    </p>
+    <ul>
+        <li><strong>Flow</strong>: The flowing, wave-like elements represent streaming data processing, showing the continuous flow of information.</li>
+        <li><strong>Matrix</strong>: The grid background represents structured data and batch processing capabilities, symbolizing organization and analysis.</li>
+    </ul>
+    <p>
+        The color palette uses shades of blue to convey trust, reliability, and data intelligence. The modern, clean typography emphasizes the professional and technical nature of the platform.
+    </p>
+</body>
+</html>

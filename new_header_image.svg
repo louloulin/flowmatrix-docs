@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="400" viewBox="0 0 1200 400">
+  <defs>
+    <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a3a4a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2c7a96;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="flow-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#3aa4ca;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7cbbd2;stop-opacity:1" />
+    </linearGradient>
+    <style>
+      .matrix-grid {
+        fill: none;
+        stroke: rgba(255, 255, 255, 0.15);
+        stroke-width: 1px;
+      }
+      .flow-line {
+        fill: none;
+        stroke: url(#flow-gradient);
+        stroke-width: 3px;
+        stroke-linecap: round;
+      }
+      .title {
+        font-family: 'Arial', sans-serif;
+        font-weight: bold;
+        fill: white;
+        font-size: 72px;
+      }
+      .subtitle {
+        font-family: 'Arial', sans-serif;
+        fill: rgba(255, 255, 255, 0.8);
+        font-size: 24px;
+      }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="100%" height="100%" fill="url(#bg-gradient)" />
+  
+  <!-- Matrix Grid Background -->
+  <g class="matrix-grid">
+    <!-- Vertical lines -->
+    <line x1="100" y1="50" x2="100" y2="350" />
+    <line x1="200" y1="50" x2="200" y2="350" />
+    <line x1="300" y1="50" x2="300" y2="350" />
+    <line x1="400" y1="50" x2="400" y2="350" />
+    <line x1="500" y1="50" x2="500" y2="350" />
+    <line x1="600" y1="50" x2="600" y2="350" />
+    <line x1="700" y1="50" x2="700" y2="350" />
+    <line x1="800" y1="50" x2="800" y2="350" />
+    <line x1="900" y1="50" x2="900" y2="350" />
+    <line x1="1000" y1="50" x2="1000" y2="350" />
+    <line x1="1100" y1="50" x2="1100" y2="350" />
+    
+    <!-- Horizontal lines -->
+    <line x1="50" y1="100" x2="1150" y2="100" />
+    <line x1="50" y1="150" x2="1150" y2="150" />
+    <line x1="50" y1="200" x2="1150" y2="200" />
+    <line x1="50" y1="250" x2="1150" y2="250" />
+    <line x1="50" y1="300" x2="1150" y2="300" />
+  </g>
+  
+  <!-- Flow Lines -->
+  <g class="flow-line">
+    <path d="M 50,150 C 150,100 250,250 350,150 S 550,50 650,150 S 850,250 950,150 S 1150,50 1150,150" />
+    <path d="M 50,200 C 150,150 250,300 350,200 S 550,100 650,200 S 850,300 950,200 S 1150,100 1150,200" />
+    <path d="M 50,250 C 150,200 250,350 350,250 S 550,150 650,250 S 850,350 950,250 S 1150,150 1150,250" />
+  </g>
+  
+  <!-- Text -->
+  <text x="600" y="180" class="title" text-anchor="middle">FlowMatrix</text>
+  <text x="600" y="230" class="subtitle" text-anchor="middle">Stream Processing Engine</text>
+</svg>

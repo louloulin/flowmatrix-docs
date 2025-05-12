@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlowMatrix Images Preview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2 {
+            color: #3aa4ca;
+        }
+        .image-container {
+            margin-bottom: 40px;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>FlowMatrix Images Preview</h1>
+    
+    <div class="image-container">
+        <h2>Header Image</h2>
+        <p>This is the new header image for the FlowMatrix documentation site:</p>
+        <img src="new_header_image.svg" alt="FlowMatrix Header Image">
+    </div>
+    
+    <div class="image-container">
+        <h2>Architecture Diagram</h2>
+        <p>This is the new architecture diagram for FlowMatrix:</p>
+        <img src="new_flowmatrix_arch.svg" alt="FlowMatrix Architecture Diagram">
+    </div>
+    
+    <p>
+        <strong>Note:</strong> These SVG files need to be converted to PNG format before replacing the existing images in the project.
+        You can use tools like ImageMagick, Inkscape, or online converters to perform this conversion.
+    </p>
+    
+    <h2>Conversion Instructions</h2>
+    <p>To convert these SVG files to PNG, you can use one of the following methods:</p>
+    
+    <ol>
+        <li>
+            <strong>Using ImageMagick:</strong>
+            <pre>convert new_header_image.svg images/header_image.png</pre>
+            <pre>convert new_flowmatrix_arch.svg images/flowmatrix_arch.png</pre>
+        </li>
+        <li>
+            <strong>Using Inkscape:</strong>
+            <pre>inkscape -z -w 1200 -h 400 new_header_image.svg -e images/header_image.png</pre>
+            <pre>inkscape -z -w 800 -h 600 new_flowmatrix_arch.svg -e images/flowmatrix_arch.png</pre>
+        </li>
+        <li>
+            <strong>Using an online converter:</strong>
+            <p>Visit a website like <a href="https://svgtopng.com/" target="_blank">svgtopng.com</a> and upload the SVG files.</p>
+        </li>
+    </ol>
+</body>
+</html>
