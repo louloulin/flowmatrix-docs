@@ -1,0 +1,61 @@
+---
+title: Rust UDAFs
+description: User-defined aggregate functions
+---
+
+Arroyo SQL supports User-Defined Aggregate Functions, allowing you to extend the
+system's capabilities with custom aggregation logic written in Rust. UDAFs are
+deployed and managed in the same way as scalar UDFs; see the [UDF
+docs](/udfs/overview) for details.
+
+Currently UDAFs are only supported in Rust.
+
+## Defining a UDAF
+
+UDAFs are defined as functions that take some number of `Vec<T>` as an
+argument, where `T` is any valid [SQL data type](/sql/data-types). Note
+that all arguments must be `Vec`—you can't mix-and-match vector and scalar
+parameters.
+
+### Example
+
+Here's a simple UDAF for calculating the median of a set of integers:
+
+```rust
+use arroyo_sql_plugin::udf;
+
+#[udf]
+fn my_median(mut args: Vec<i64>) -> Option<f64> {
+    if args.is_empty() {
+        return None;
+    }
+
+    args.sort();
+
+    let mid = args.len() / 2;
+    if args.len() % 2 == 0 {
+        Some((args[mid] + args[mid - 1]) as f64 / 2.0)
+    } else {
+        Some(args[mid] as f64)
+    }
+}
+```
+
+Once defined, a UDAF can be used within a SQL query like the built-in aggregate
+functions:
+
+```sql
+SELECT
+    my_median(bid.price),
+    bid.auction,
+    SESSION(interval '10 second') as session
+FROM nexmark
+GROUP BY 2,3
+```
+
+## Nullability
+
+If a UDAF argument type is an `Option` (e.g., `Vec<Option<i64>>`), the UDAF will
+be invoked with all inputs, including `NULL`s. Otherwise, only non-null
+arguments will be passed down to the UDAF. Unlike UDFs, UDAFs will always be
+invoked, although possibly with empty input vectors.
