@@ -3,11 +3,11 @@ title: Rust UDFs
 description: Writing UDFs in Rust
 ---
 
-Arroyo user-defined functions (UDFs) can be written in Rust, with performance
+FlowMatrix user-defined functions (UDFs) can be written in Rust, with performance
 that is comparable to built-in functions.
 
 UDFs are defined as Rust functions, annotated with the `#[udf]` attribute from the
-`arroyo_udf_plugin` crate. The parameters and return type of the UDF are determined
+`flowmatrix_udf_plugin` crate. The parameters and return type of the UDF are determined
 by the definition of the function. All types must be valid [SQL data types](/sql/data-types).
 
 For String and Binary types (`TEXT` `BYTEA` in SQL), UDFs use the reference type
@@ -16,7 +16,7 @@ For String and Binary types (`TEXT` `BYTEA` in SQL), UDFs use the reference type
 Here's an example of a simple UDF that squares an integer:
 
 ```rust
-use arroyo_udf_plugin::udf;
+use flowmatrix_udf_plugin::udf;
 
 #[udf]
 fn my_square(x: u64) -> u64 {
@@ -63,7 +63,7 @@ special comment in the UDF definition like this:
 regex = "1.10.2"
 */
 
-use arroyo_udf_plugin::udf;
+use flowmatrix_udf_plugin::udf;
 use regex::Regex;
 
 #[udf]

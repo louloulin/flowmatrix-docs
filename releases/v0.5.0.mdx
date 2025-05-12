@@ -1,14 +1,14 @@
 ---
 title: v0.5.0
-description: Release 0.5.0 of Arroyo
+description: Release 0.5.0 of FlowMatrix
 ---
 
 # Overview
 
-Arroyo 0.5 brings a number of new features and improvements to the Arroyo
+FlowMatrix 0.5 brings a number of new features and improvements to the FlowMatrix
 platform. The biggest of these is the new FileSystem connector, which is a
 high-performance, transactional sink for writing data to filesystems and object
-stores like S3. This allows Arroyo to write into data lakes and data warehouses.
+stores like S3. This allows FlowMatrix to write into data lakes and data warehouses.
 We've also added exactly-once support for Kafka sinks, a new Kinesis connector,
 expanded our SQL support, and made a number of improvements to the Web UI and
 REST API.
@@ -30,9 +30,9 @@ can join against all of that user's previous activity.
 
 Building on the FileSystem work in this release, we'll also be adding
 integration with Delta Lake. Along with a new, built-in Postgres sink we'll be
-expanding Arroyo's capabilities for ETL workloads. Finally, we're planning on
+expanding FlowMatrix's capabilities for ETL workloads. Finally, we're planning on
 introducing our first support for UDAFs (user-defined aggregate functions), to
-allow more powerful extensions to Arroyo's SQL support.
+allow more powerful extensions to FlowMatrix's SQL support.
 
 Anything else you'd like to see? Let us know on
 [Discord](https://discord.gg/cjCr5rVmyR)!
@@ -51,14 +51,14 @@ with decent query performance. Modern query engines like Trino, ClickHouse, and
 DuckDB can operate directly on these files, as can many data warehouses like
 Snowflake and Redshift.
 
-And with the new FileSystem connector, Arroyo can efficiently perform real-time
+And with the new FileSystem connector, FlowMatrix can efficiently perform real-time
 ETL into these S3-backed systems.
 
 The FileSystem connector is a high-performance, transactional sink for
 writing data (as Parquet or JSON files) to file systems and object stores like
 S3.
 
-It's deeply integrated with Arroyo's checkpoint system for exactly-once
+It's deeply integrated with FlowMatrix's checkpoint system for exactly-once
 processing. This means that even if a machine is lost or a job is restarted, the
 data written to S3 will be consistent and correct. Unlike other systems like
 Flink, it's even able to perform consistent checkpointing while in the process
@@ -89,21 +89,21 @@ See the [docs](/connectors/filesystem) for all of the details
 and available options.
 
 * Commits and parquet file sink by [@jacksonrnewhouse](https://github.com/jacksonrnewhouse) in
-  [#197](https://github.com/ArroyoSystems/arroyo/pull/197)
+  [#197](https://github.com/FlowMatrixSystems/flowmatrix/pull/197)
 * Add Parquet as a serialization format throughout by [@jacksonrnewhouse](https://github.com/jacksonrnewhouse) in
-  [#216](https://github.com/ArroyoSystems/arroyo/pull/216)
+  [#216](https://github.com/FlowMatrixSystems/flowmatrix/pull/216)
 
 
 ## Exactly-once Kafka sink
 
-Arroyo has always supported exactly-once processing when reading from Kafka by
+FlowMatrix has always supported exactly-once processing when reading from Kafka by
 integrating offset-tracking with its checkpoint system. In 0.5 we're adding
 exactly-once support for _writing_ to Kafka as well. This enables end-to-end
 exactly-once processing when integrating with other systems via Kafka.
 
 Exactly-once processing is achieved by leveraging Kafka's [transactional
 API](https://www.confluent.io/blog/transactions-apache-kafka/). When processing
-starts, Arroyo will begin a transaction which is used for all writes.
+starts, FlowMatrix will begin a transaction which is used for all writes.
 
 Once a checkpoint is completed successfully, the transaction is committed,
 allowing consumers to read the records. This ensures that records are only read
@@ -138,11 +138,11 @@ See the [Kafka connector docs](/connectors/kafka) for more details.
 
 * implement exactly-once commits to Kafka sinks and read_committed reads to
   Kafka sources by [@jacksonrnewhouse](https://github.com/jacksonrnewhouse) in
-  [#218](https://github.com/ArroyoSystems/arroyo/pull/218)
+  [#218](https://github.com/FlowMatrixSystems/flowmatrix/pull/218)
 
 ## Kinesis connector
 
-Arroyo now supports reading from and writing to
+FlowMatrix now supports reading from and writing to
 [AWS Kinesis data streams](https://aws.amazon.com/kinesis/data-streams) via the
 new Kinesis connector. Like the existing Kafka connector, the Kinesis connector
 supports exactly-once processing of records.
@@ -179,11 +179,11 @@ SELECT * from kinesis_source;
 See the [Kinesis connector docs](/connectors/kinesis) for
 all the available options.
 
-* Add Kinesis Source and Sink by [@jacksonrnewhouse](https://github.com/jacksonrnewhouse) in [#234](https://github.com/ArroyoSystems/arroyo/pull/234)
+* Add Kinesis Source and Sink by [@jacksonrnewhouse](https://github.com/jacksonrnewhouse) in [#234](https://github.com/FlowMatrixSystems/flowmatrix/pull/234)
 
 ## Postgres sink via Debezium
 
-Arroyo now supports writing to relational databases (including Postgres and
+FlowMatrix now supports writing to relational databases (including Postgres and
 Mysql) via Debezium.
 
 As part of this work, we've added support for embedding JSON schemas in outputs
@@ -198,11 +198,11 @@ serialized and deserialized, for example allowing for custom date and timestamp
 formats. Refer to the new [format docs](/connectors/overview#connection-formats).
 
 * Support sinking to relational databases via Debezium by [@mwylde](https://github.com/mwylde) in
-  [#235](https://github.com/ArroyoSystems/arroyo/pull/235)
+  [#235](https://github.com/FlowMatrixSystems/flowmatrix/pull/235)
 
 ## Session windows
 
-Arroyo 0.5 adds support for
+FlowMatrix 0.5 adds support for
 [_session windows_](/sql/windows#session-windows).
 
 Unlike sliding and tumbling windows which divide time up into fixed intervals, session windows
@@ -226,7 +226,7 @@ FROM clickstream
 GROUP BY window, user_id;
 ```
 
-* Session windows by [@mwylde](https://github.com/mwylde) in [#243](https://github.com/ArroyoSystems/arroyo/pull/243)
+* Session windows by [@mwylde](https://github.com/mwylde) in [#243](https://github.com/FlowMatrixSystems/flowmatrix/pull/243)
 
 ## Idle watermarks
 
@@ -246,14 +246,14 @@ Idleness is now enabled by default for all sources with a period of 5 minutes.
 It can be configured when creating a source in SQL by setting the `idle_micros`
 options, or disabled by setting it to `-1`.
 
-A special case of idleness occurs when there are more Arroyo source tasks than
-partitions (for example, a Kafka topic with 4 partitions read by 8 Arroyo
+A special case of idleness occurs when there are more FlowMatrix source tasks than
+partitions (for example, a Kafka topic with 4 partitions read by 8 FlowMatrix
 tasks). This means that some tasks will never receive data, and so will never
 advance their watermarks. This can occur as well for non-partitioned sources
 like WebSocket, where only a single task is able to read data. Now sources will
 immediately set inactive tasks to idle.
 
-* Add support for idle watermarks by [@mwylde](https://github.com/mwylde) in [#222](https://github.com/ArroyoSystems/arroyo/pull/222)
+* Add support for idle watermarks by [@mwylde](https://github.com/mwylde) in [#222](https://github.com/FlowMatrixSystems/flowmatrix/pull/222)
 
 ## REST API
 
@@ -330,40 +330,40 @@ See all of the API docs [here](/api-reference/).
 In this release most of the Web UI has been migrated from the gRPC API to the
 new REST API along with a number of improvements to the UI.
 
-* Use REST API for majority of console by [@jbeisen](https://github.com/jbeisen) in [#221](https://github.com/ArroyoSystems/arroyo/pull/221)
-* Stream job output using server-sent events by [@jbeisen](https://github.com/jbeisen) in [#228](https://github.com/ArroyoSystems/arroyo/pull/228)
-* Use REST API for metrics by [@jbeisen](https://github.com/jbeisen) in [#229](https://github.com/ArroyoSystems/arroyo/pull/229)
-* Fix action button behavior by [@jbeisen](https://github.com/jbeisen) in [#232](https://github.com/ArroyoSystems/arroyo/pull/232)
-* Move rest types to arroyo-rpc by [@jbeisen](https://github.com/jbeisen) in [#230](https://github.com/ArroyoSystems/arroyo/pull/230)
-* Use REST API for connectors by [@jbeisen](https://github.com/jbeisen) in [#231](https://github.com/ArroyoSystems/arroyo/pull/231)
-* Proxy api requests and allow setting api root by [@jbeisen](https://github.com/jbeisen) in [#236](https://github.com/ArroyoSystems/arroyo/pull/236)
-* Show API unavailable page on 5xx responses by [@jbeisen](https://github.com/jbeisen) in [#238](https://github.com/ArroyoSystems/arroyo/pull/238)
-* Show warning message if we can't get metrics by [@jbeisen](https://github.com/jbeisen) in [#249](https://github.com/ArroyoSystems/arroyo/pull/249)
-* Backfill pub_id columns by [@jbeisen](https://github.com/jbeisen) in [#219](https://github.com/ArroyoSystems/arroyo/pull/219)
-* Unify job ids by [@jbeisen](https://github.com/jbeisen) in [#223](https://github.com/ArroyoSystems/arroyo/pull/223)
-* Use jobs tag with metrics endpoint by [@jbeisen](https://github.com/jbeisen) in [#247](https://github.com/ArroyoSystems/arroyo/pull/247)
+* Use REST API for majority of console by [@jbeisen](https://github.com/jbeisen) in [#221](https://github.com/FlowMatrixSystems/flowmatrix/pull/221)
+* Stream job output using server-sent events by [@jbeisen](https://github.com/jbeisen) in [#228](https://github.com/FlowMatrixSystems/flowmatrix/pull/228)
+* Use REST API for metrics by [@jbeisen](https://github.com/jbeisen) in [#229](https://github.com/FlowMatrixSystems/flowmatrix/pull/229)
+* Fix action button behavior by [@jbeisen](https://github.com/jbeisen) in [#232](https://github.com/FlowMatrixSystems/flowmatrix/pull/232)
+* Move rest types to flowmatrix-rpc by [@jbeisen](https://github.com/jbeisen) in [#230](https://github.com/FlowMatrixSystems/flowmatrix/pull/230)
+* Use REST API for connectors by [@jbeisen](https://github.com/jbeisen) in [#231](https://github.com/FlowMatrixSystems/flowmatrix/pull/231)
+* Proxy api requests and allow setting api root by [@jbeisen](https://github.com/jbeisen) in [#236](https://github.com/FlowMatrixSystems/flowmatrix/pull/236)
+* Show API unavailable page on 5xx responses by [@jbeisen](https://github.com/jbeisen) in [#238](https://github.com/FlowMatrixSystems/flowmatrix/pull/238)
+* Show warning message if we can't get metrics by [@jbeisen](https://github.com/jbeisen) in [#249](https://github.com/FlowMatrixSystems/flowmatrix/pull/249)
+* Backfill pub_id columns by [@jbeisen](https://github.com/jbeisen) in [#219](https://github.com/FlowMatrixSystems/flowmatrix/pull/219)
+* Unify job ids by [@jbeisen](https://github.com/jbeisen) in [#223](https://github.com/FlowMatrixSystems/flowmatrix/pull/223)
+* Use jobs tag with metrics endpoint by [@jbeisen](https://github.com/jbeisen) in [#247](https://github.com/FlowMatrixSystems/flowmatrix/pull/247)
 
 # Improvements
 
-* Adding global error handling by [@edmondop](https://github.com/edmondop) in [#206](https://github.com/ArroyoSystems/arroyo/pull/206)
-* Validating table name by [@edmondop](https://github.com/edmondop) in [#207](https://github.com/ArroyoSystems/arroyo/pull/207)
-* Update dependencies by [@mwylde](https://github.com/mwylde) in [#211](https://github.com/ArroyoSystems/arroyo/pull/211)
-* Address GitHub dependabot alerts by [@mwylde](https://github.com/mwylde) in [#212](https://github.com/ArroyoSystems/arroyo/pull/212)
-* Improvements to node scheduler by [@mwylde](https://github.com/mwylde) in [#213](https://github.com/ArroyoSystems/arroyo/pull/213)
-* Implement the from_unixtime SQL function by [@mwylde](https://github.com/mwylde) in [#217](https://github.com/ArroyoSystems/arroyo/pull/217)
-* Bump datafusion to 28.0.0. Move arrow-rs up to workspace level by [@jacksonrnewhouse](https://github.com/jacksonrnewhouse) in [#220](https://github.com/ArroyoSystems/arroyo/pull/220)
-* Report errors instead of panicking when we receive invalid debezium messages by [@mwylde](https://github.com/mwylde) in [#245](https://github.com/ArroyoSystems/arroyo/pull/245)
-* Build services with --all-features for arroyo-single by [@jacksonrnewhouse](https://github.com/jacksonrnewhouse) in [#246](https://github.com/ArroyoSystems/arroyo/pull/246)
-* Make udfs field optional in REST API by @jbeisen in https://github.com/ArroyoSystems/arroyo/pull/250
+* Adding global error handling by [@edmondop](https://github.com/edmondop) in [#206](https://github.com/FlowMatrixSystems/flowmatrix/pull/206)
+* Validating table name by [@edmondop](https://github.com/edmondop) in [#207](https://github.com/FlowMatrixSystems/flowmatrix/pull/207)
+* Update dependencies by [@mwylde](https://github.com/mwylde) in [#211](https://github.com/FlowMatrixSystems/flowmatrix/pull/211)
+* Address GitHub dependabot alerts by [@mwylde](https://github.com/mwylde) in [#212](https://github.com/FlowMatrixSystems/flowmatrix/pull/212)
+* Improvements to node scheduler by [@mwylde](https://github.com/mwylde) in [#213](https://github.com/FlowMatrixSystems/flowmatrix/pull/213)
+* Implement the from_unixtime SQL function by [@mwylde](https://github.com/mwylde) in [#217](https://github.com/FlowMatrixSystems/flowmatrix/pull/217)
+* Bump datafusion to 28.0.0. Move arrow-rs up to workspace level by [@jacksonrnewhouse](https://github.com/jacksonrnewhouse) in [#220](https://github.com/FlowMatrixSystems/flowmatrix/pull/220)
+* Report errors instead of panicking when we receive invalid debezium messages by [@mwylde](https://github.com/mwylde) in [#245](https://github.com/FlowMatrixSystems/flowmatrix/pull/245)
+* Build services with --all-features for flowmatrix-single by [@jacksonrnewhouse](https://github.com/jacksonrnewhouse) in [#246](https://github.com/FlowMatrixSystems/flowmatrix/pull/246)
+* Make udfs field optional in REST API by @jbeisen in https://github.com/FlowMatrixSystems/flowmatrix/pull/250
 
 # Fixes
-* Fix type for array builder on Float32 by [@jacksonrnewhouse](https://github.com/jacksonrnewhouse) in [#226](https://github.com/ArroyoSystems/arroyo/pull/226)
-* Use correct PrimitiveBuilder for Float16 and Float64 by [@jacksonrnewhouse](https://github.com/jacksonrnewhouse) in [#227](https://github.com/ArroyoSystems/arroyo/pull/227)
-* Fix job output rendering by [@jbeisen](https://github.com/jbeisen) in [#244](https://github.com/ArroyoSystems/arroyo/pull/244)
-* Fix delete pipeline query and check job status by [@jbeisen](https://github.com/jbeisen) in [#210](https://github.com/ArroyoSystems/arroyo/pull/210)
-* Correctly constrain sql calculations by [@jacksonrnewhouse](https://github.com/jacksonrnewhouse) in [#241](https://github.com/ArroyoSystems/arroyo/pull/241)
-* Restore raw string deserialization by [@jbeisen](https://github.com/jbeisen) in [#248](https://github.com/ArroyoSystems/arroyo/pull/248)
-* build services with --all-features for arroyo-single. by @jacksonrnewhouse in https://github.com/ArroyoSystems/arroyo/pull/246
+* Fix type for array builder on Float32 by [@jacksonrnewhouse](https://github.com/jacksonrnewhouse) in [#226](https://github.com/FlowMatrixSystems/flowmatrix/pull/226)
+* Use correct PrimitiveBuilder for Float16 and Float64 by [@jacksonrnewhouse](https://github.com/jacksonrnewhouse) in [#227](https://github.com/FlowMatrixSystems/flowmatrix/pull/227)
+* Fix job output rendering by [@jbeisen](https://github.com/jbeisen) in [#244](https://github.com/FlowMatrixSystems/flowmatrix/pull/244)
+* Fix delete pipeline query and check job status by [@jbeisen](https://github.com/jbeisen) in [#210](https://github.com/FlowMatrixSystems/flowmatrix/pull/210)
+* Correctly constrain sql calculations by [@jacksonrnewhouse](https://github.com/jacksonrnewhouse) in [#241](https://github.com/FlowMatrixSystems/flowmatrix/pull/241)
+* Restore raw string deserialization by [@jbeisen](https://github.com/jbeisen) in [#248](https://github.com/FlowMatrixSystems/flowmatrix/pull/248)
+* build services with --all-features for flowmatrix-single. by @jacksonrnewhouse in https://github.com/FlowMatrixSystems/flowmatrix/pull/246
 
 
-The full change-log is available [here](https://github.com/ArroyoSystems/arroyo/compare/v0.4.1...v0.5.0)
+The full change-log is available [here](https://github.com/FlowMatrixSystems/flowmatrix/compare/v0.4.1...v0.5.0)

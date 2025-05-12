@@ -3,14 +3,14 @@ title: Redis
 description: "Connect to Redis"
 ---
 
-Arroyo includes two types of Redis connectors: a sink and a lookup connector,
+FlowMatrix includes two types of Redis connectors: a sink and a lookup connector,
 for lookup joins.
 
 ## Sink
 
 The Redis sink allows you to write data to a [Redis](https://redis.io) instance
 or cluster. Redis is a great choice for use cases where you need low-latency access
-to the outputs of your Arroyo pipeline.
+to the outputs of your FlowMatrix pipeline.
 
 The Redis sink uses pipelining to achieve high throughput and is capable of
 writing millions of records per second to a single Redis instance.

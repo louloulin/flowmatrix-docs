@@ -1,9 +1,9 @@
 ---
 title: Getting started
-description: "Setting up Arroyo locally"
+description: "Setting up FlowMatrix locally"
 ---
 
-Arroyo ships as a single, self-contained binary for Linux and MacoS or as a docker container. It can be run in two
+FlowMatrix ships as a single, self-contained binary for Linux and MacoS or as a docker container. It can be run in two
 modes: as a persistent multi-job _session cluster_, or a single-job _pipeline cluster_. When run locally or in Docker,
 the default sqlite database is used to store configuration data.
 
@@ -11,42 +11,42 @@ the default sqlite database is used to store configuration data.
 
 ### Locally
 
-The easiest way to try out Arroyo is to run it locally. Currently Linux and MacOS are well supported.
+The easiest way to try out FlowMatrix is to run it locally. Currently Linux and MacOS are well supported.
 
-For MacOS, we provide a Homebrew tap that can be used to install Arroyo:
+For MacOS, we provide a Homebrew tap that can be used to install FlowMatrix:
 
 ```shellsession
-brew install arroyosystems/tap/arroyo
+brew install flowmatrixsystems/tap/flowmatrix
 ```
 
 For MacOS and Linux, you can also install the binary with the following script:
 
 ```shellsession
-curl -LsSf https://arroyo.dev/install.sh | sh
+curl -LsSf https://flowmatrix.dev/install.sh | sh
 ```
 
 Alternatively, you can download the binary for your OS and architecture from the
-[releases page](https://github.com/arroyosystems/arroyo/releases).
+[releases page](https://github.com/flowmatrixsystems/flowmatrix/releases).
 
-Once you've installed Arroyo, you can run it with the `arroyo` command:
+Once you've installed FlowMatrix, you can run it with the `flowmatrix` command:
 
 ```shellsession
-$ arroyo --help
-Usage: arroyo [OPTIONS] <COMMAND>
+$ flowmatrix --help
+Usage: flowmatrix [OPTIONS] <COMMAND>
 
 Commands:
   run         Run a query as a local pipeline cluster
-  api         Starts an Arroyo API server
-  controller  Starts an Arroyo Controller
-  cluster     Starts a complete Arroyo cluster
-  worker      Starts an Arroyo worker
-  compiler    Starts an Arroyo compiler server
-  node        Starts an Arroyo node server
+  api         Starts an FlowMatrix API server
+  controller  Starts an FlowMatrix Controller
+  cluster     Starts a complete FlowMatrix cluster
+  worker      Starts an FlowMatrix worker
+  compiler    Starts an FlowMatrix compiler server
+  node        Starts an FlowMatrix node server
   migrate     Runs database migrations on the configured Postgres database
   help        Print this message or the help of the given subcommand(s)
 
 Options:
-  -c, --config <CONFIG>          Path to an Arroyo config file, in TOML or YAML
+  -c, --config <CONFIG>          Path to an FlowMatrix config file, in TOML or YAML
                                  format
       --config-dir <CONFIG_DIR>  Directory in which to look for configuration files
   -h, --help                     Print help
@@ -56,22 +56,22 @@ Options:
 A local cluster can be started with
 
 ```shellsession
-$ arroyo cluster
-2024-07-01T22:58:29.316336Z  INFO arroyo_server_common: Starting cluster admin server on 0.0.0.0:8119
-2024-07-01T22:58:29.339237Z  INFO arroyo_api: Starting API server on 0.0.0.0:5115
-2024-07-01T22:58:29.342200Z  INFO arroyo_controller: Using process scheduler
-2024-07-01T22:58:29.348490Z  INFO arroyo_controller: Starting arroyo-controller on 0.0.0.0:5116
-2024-07-01T22:58:29.364186Z  INFO arroyo_compiler_service: Starting compiler service at 0.0.0.0:5117
+$ flowmatrix cluster
+2024-07-01T22:58:29.316336Z  INFO flowmatrix_server_common: Starting cluster admin server on 0.0.0.0:8119
+2024-07-01T22:58:29.339237Z  INFO flowmatrix_api: Starting API server on 0.0.0.0:5115
+2024-07-01T22:58:29.342200Z  INFO flowmatrix_controller: Using process scheduler
+2024-07-01T22:58:29.348490Z  INFO flowmatrix_controller: Starting flowmatrix-controller on 0.0.0.0:5116
+2024-07-01T22:58:29.364186Z  INFO flowmatrix_compiler_service: Starting compiler service at 0.0.0.0:5117
 ```
 
 Then, open the Web UI in your browser at http://localhost:5115.
 
 ### With Docker
 
-Arroyo can also run in Docker. Note that by default, a docker cluster will not persist the set of pipelines and tables.
+FlowMatrix can also run in Docker. Note that by default, a docker cluster will not persist the set of pipelines and tables.
 
 ```bash
-$ docker run -p 5115:5115 ghcr.io/arroyosystems/arroyo:latest
+$ docker run -p 5115:5115 ghcr.io/flowmatrixsystems/flowmatrix:latest
 ```
 
 <Tip>
@@ -89,14 +89,14 @@ Then, open the Web UI at http://localhost:5115.
 
 ## Running a single pipeline
 
-In addition to the multi-tenant _session cluster_ mode, Arroyo can also be configured to run a single pipeline
-via the CLI as a _pipeline cluster_ via the `arroyo run` subcommand:
+In addition to the multi-tenant _session cluster_ mode, FlowMatrix can also be configured to run a single pipeline
+via the CLI as a _pipeline cluster_ via the `flowmatrix run` subcommand:
 
 ```shellsession
-$ arroyo run --help
+$ flowmatrix run --help
 Run a query as a local pipeline cluster
 
-Usage: arroyo run [OPTIONS] [QUERY]
+Usage: flowmatrix run [OPTIONS] [QUERY]
 
 Arguments:
   [QUERY]  The query to run [default: -]
@@ -111,7 +111,7 @@ Options:
   -h, --help                       Print help
 ```
 
-By default, `arroyo run` will read a SQL query from STDIN, or the query can be provided
+By default, `flowmatrix run` will read a SQL query from STDIN, or the query can be provided
 as an argument.
 
 See the [pipeline cluster](/deployment/pipeline-clusters) docs for more details.

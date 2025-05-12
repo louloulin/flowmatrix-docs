@@ -1,9 +1,9 @@
 ---
 title: v0.7.0
-description: Release 0.7.0 of Arroyo
+description: Release 0.7.0 of FlowMatrix
 ---
 
-*This release notes are also available on the [Arroyo blog](https://www.arroyo.dev/blog/arroyo-0-7-0).*
+*This release notes are also available on the [FlowMatrix blog](https://www.flowmatrix.dev/blog/flowmatrix-0-7-0).*
 
 # Overview
 
@@ -24,11 +24,11 @@ Thanks to all our contributors for this release:
 
 ## What's next
 
-With the 0.7 release out, we're already working on the next one. Arroyo 0.8 is
+With the 0.7 release out, we're already working on the next one. FlowMatrix 0.8 is
 targeted for mid-November, and will include a number of new features, including
 support for Avro, Delta Lake integration, a FileSystem source, saved UDFs, and
 more. We've also been working on a new distributed state backend, which will
-allow Arroyo to scale to multi-TB state sizes while maintaining fast restarts
+allow FlowMatrix to scale to multi-TB state sizes while maintaining fast restarts
 and frequently checkpoints.
 
 Anything you'd like to see? Let us know on [Discord](https://discord.gg/cjCr5rVmyR)!
@@ -39,7 +39,7 @@ Now on to the details.
 
 ## Custom partitioning for FileSystem sink
 
-Arroyo 0.5 added a high-performance, transactional
+FlowMatrix 0.5 added a high-performance, transactional
 [filesystem sink](/connectors/filesystem) which enables
 ingestion into data warehouses on S3. The initial version did not support
 custom partitioning of data, so records were written to a single file per
@@ -48,7 +48,7 @@ subtask (with time and size-based rollovers).
 In many cases, you will get better query performance if you partition your data
 by a field in your data (like an event type) or by time.
 
-Arroyo 0.7 introduces support for field-based and time-based partitioning, allowing
+FlowMatrix 0.7 introduces support for field-based and time-based partitioning, allowing
 you to optimize your data layout according to your query patterns.
 
 For example you can now create a table like this:
@@ -62,7 +62,7 @@ CREATE TABLE file_sink (
 ) WITH (
     connector = 'filesystem',
     format = 'parquet',
-    path = 's3://arroyo-events/realtime',
+    path = 's3://flowmatrix-events/realtime',
     rollover_seconds = '3600',
     time_partition_pattern = 'year=%Y/month=%m/day=%d/hour=%H',
     partition_fields = 'event_type'
@@ -70,23 +70,23 @@ CREATE TABLE file_sink (
 ```
 
 This will write data to a path like
-`s3://arroyo-events/realtime/year=2023/month=10/day=19/hour=10/event_type=login`.
+`s3://flowmatrix-events/realtime/year=2023/month=10/day=19/hour=10/event_type=login`.
 
 See all of the available options in the [docs](/connectors/filesystem#Partitioning_Options).
 
 * Implement event time and field based partitioning for filesystem sink by
-  [@jacksonrnewhouse](https://github.com/jacksonrnewhouse) in [#352](https://github.com/ArroyoSystems/arroyo/pull/352)
+  [@jacksonrnewhouse](https://github.com/jacksonrnewhouse) in [#352](https://github.com/FlowMatrixSystems/flowmatrix/pull/352)
 
 
 ## Message Framing
 
-Arroyo now supports defining a _framing strategy_ for messages. This allows
+FlowMatrix now supports defining a _framing strategy_ for messages. This allows
 users to customize how messages read off of a source are split into records for
 processing, where previously there was always a one-to-one mapping. This is
 particularly useful for sources which do not have a built-in framing strategy,
 such as HTTP APIs.
 
-As an example, Arroyo can now directly consume metrics from a
+As an example, FlowMatrix can now directly consume metrics from a
 prometheus-compatible application—without using Prometheus! Here's a query that
 polls a prometheus endpoint (for a node exporter) and computes the CPU usage
 over a 1 minute sliding window:
@@ -180,7 +180,7 @@ See the [format docs](/connectors/overview#framing) for more.
 
 * Add support for framing in message deserialization by
   [@mwylde](https://github.com/mwylde) in
-  [#339](https://github.com/ArroyoSystems/arroyo/pull/339)
+  [#339](https://github.com/FlowMatrixSystems/flowmatrix/pull/339)
 
 ## SQL unnest
 
@@ -203,10 +203,10 @@ CREATE TABLE raw_events (
     value TEXT
 ) WITH (
     connector = 'polling_http',
-    endpoint = 'https://api.github.com/networks/arroyosystems/events',
+    endpoint = 'https://api.github.com/networks/flowmatrixsystems/events',
     poll_interval_ms = '5000',
     emit_behavior = 'changed',
-    headers = 'User-Agent:arroyo/0.7',
+    headers = 'User-Agent:flowmatrix/0.7',
     format = 'json',
     'json.unstructured' = 'true'
 );
@@ -228,10 +228,10 @@ select concat(type, ' from ', login, ' in ', repo) FROM (
 ```
 
 * Implement unnest by [@mwylde](https://github.com/mwylde) in
-  [#354](https://github.com/ArroyoSystems/arroyo/pull/354)
+  [#354](https://github.com/FlowMatrixSystems/flowmatrix/pull/354)
 * Support multiple projections from a single unnest by
   [@mwylde](https://github.com/mwylde) in
-  [#366](https://github.com/ArroyoSystems/arroyo/pull/366)
+  [#366](https://github.com/FlowMatrixSystems/flowmatrix/pull/366)
 
 ## SQL union
 
@@ -268,15 +268,15 @@ union all select value from topic2;
 ```
 
 * Support UNION by [@jacksonrnewhouse](https://github.com/jacksonrnewhouse) in
-  [#346](https://github.com/ArroyoSystems/arroyo/pull/346)
+  [#346](https://github.com/FlowMatrixSystems/flowmatrix/pull/346)
 * Allow unions with matching types but different columns by
   [@jacksonrnewhouse](https://github.com/jacksonrnewhouse) in
-  [#370](https://github.com/ArroyoSystems/arroyo/pull/370)
+  [#370](https://github.com/FlowMatrixSystems/flowmatrix/pull/370)
 
 
 ## State compaction
 
-Arroyo pipelines are stateful; operators like windows and joins need to remember things
+FlowMatrix pipelines are stateful; operators like windows and joins need to remember things
 in order to aggregate across time, and sources and sinks need to remember what data they've
 already read or written to provide exactly-once semantics. While state is stored in memory
 for processing, it also needs to be written durably so that it can be recovered in the event
@@ -284,9 +284,9 @@ of a failure. Today we write this state to local disk or to a remote object stor
 as Parquet files.
 
 This process of writing state to disk is called _checkpointing_ (you can read more about how this
-works in [our docs](/concepts#stateful-processing)). Arroyo takes
+works in [our docs](/concepts#stateful-processing)). FlowMatrix takes
 frequent checkpoints (by default every ten seconds) to minimize the amount of data that needs
-to be reprocessed in the case of failure. Arroyo's checkpointing is _incremental_, which means
+to be reprocessed in the case of failure. FlowMatrix's checkpointing is _incremental_, which means
 that each checkpoint only contains the changes since the last checkpoint, but still involves writing a
 new set of files.
 
@@ -295,7 +295,7 @@ remains in previous versions of the file. So over time, as we take more checkpoi
 with more and more files on disk, and more and more data that needs to be read and processed
 when we restart a pipeline.
 
-To solve this problem, Arroyo now supports _compaction_, which is the process of merging
+To solve this problem, FlowMatrix now supports _compaction_, which is the process of merging
 multiple Parquet files into a single file. By compacting our state files, we can actually delete
 data, and resolve multiples writes to the same key into a single value while reducing the total
 number of files.
@@ -307,36 +307,36 @@ recovery times.
 
 * Allow compaction on previously compacted epochs by
   [@jbeisen](https://github.com/jbeisen) in
-  [#328](https://github.com/ArroyoSystems/arroyo/pull/328)
+  [#328](https://github.com/FlowMatrixSystems/flowmatrix/pull/328)
 * Smoke test compaction and fix compaction logic by
   [@jbeisen](https://github.com/jbeisen) in
-  [#332](https://github.com/ArroyoSystems/arroyo/pull/332)
+  [#332](https://github.com/FlowMatrixSystems/flowmatrix/pull/332)
 * Support delete operations for KeyTimeMultiMap by
   [@jbeisen](https://github.com/jbeisen) in
-  [#338](https://github.com/ArroyoSystems/arroyo/pull/338)
+  [#338](https://github.com/FlowMatrixSystems/flowmatrix/pull/338)
 * Support deletes in the parquet backend by
   [@jbeisen](https://github.com/jbeisen) in
-  [#282](https://github.com/ArroyoSystems/arroyo/pull/282)
+  [#282](https://github.com/FlowMatrixSystems/flowmatrix/pull/282)
 
-## Arroyo CLI
+## FlowMatrix CLI
 
-Arroyo now includes a CLI tool, `arroyo`, which currently can be used to manage
-local Arroyo clusters. If you have [a rust toolchain](https://rustup.rs/), you
+FlowMatrix now includes a CLI tool, `flowmatrix`, which currently can be used to manage
+local FlowMatrix clusters. If you have [a rust toolchain](https://rustup.rs/), you
 can install it with
 
 ```console
-$ cargo install arroyo
-$ arroyo
-Arroyo is a distributed stream processor that lets users ask complex
+$ cargo install flowmatrix
+$ flowmatrix
+FlowMatrix is a distributed stream processor that lets users ask complex
 questions of high-volume real-time data by writing SQL.
 
-This CLI can be used to run Arroyo clusters in Docker
+This CLI can be used to run FlowMatrix clusters in Docker
 
-Usage: arroyo <COMMAND>
+Usage: flowmatrix <COMMAND>
 
 Commands:
-  start  Starts an Arroyo cluster in Docker
-  stop   Stops a running Arroyo cluster
+  start  Starts an FlowMatrix cluster in Docker
+  stop   Stops a running FlowMatrix cluster
   help   Print this message or the help of the given subcommand(s)
 
 Options:
@@ -344,17 +344,17 @@ Options:
   -V, --version  Print version
 ```
 
-Then you can start an Arroyo cluster with
+Then you can start an FlowMatrix cluster with
 
 ```console
-$ arroyo start
+$ flowmatrix start
 ```
 
 We'll be adding more commands to the CLI in the future, including support for
 interacting with the API to manage pipelines and run queries.
 
-* Add arroyo cli crate (`arroyo`) by [@mwylde](https://github.com/mwylde) in
-  [#333](https://github.com/ArroyoSystems/arroyo/pull/333)
+* Add flowmatrix cli crate (`flowmatrix`) by [@mwylde](https://github.com/mwylde) in
+  [#333](https://github.com/FlowMatrixSystems/flowmatrix/pull/333)
 
 ## Console onboarding and example queries
 
@@ -366,27 +366,27 @@ create pipeline screen.
 
 * Add example queries and short welcome tour by
   [@jbeisen](https://github.com/jbeisen) in
-  [#348](https://github.com/ArroyoSystems/arroyo/pull/348)
+  [#348](https://github.com/FlowMatrixSystems/flowmatrix/pull/348)
 
 
 ## UDF checking in the console
 
-When writing Rust UDFs, it's easy to end up with compiler errors as you're developing. Arroyo
+When writing Rust UDFs, it's easy to end up with compiler errors as you're developing. FlowMatrix
 now checks UDFs for errors before starting the pipeline, and will show you the errors in the
 console:
 
-* Run cargo check on udfs by [@jbeisen](https://github.com/jbeisen) in [#359](https://github.com/ArroyoSystems/arroyo/pull/359)
+* Run cargo check on udfs by [@jbeisen](https://github.com/jbeisen) in [#359](https://github.com/FlowMatrixSystems/flowmatrix/pull/359)
 
 ## Array indexing
 
-Arroyo now supports indexing into arrays with subscript notation:
+FlowMatrix now supports indexing into arrays with subscript notation:
 
 ```sql
 select make_array(1, 2, 3)[1]
 from source;
 ```
 
-* Support numeric indexes off of arrays by [@jacksonrnewhouse](https://github.com/jacksonrnewhouse) in [#364](https://github.com/ArroyoSystems/arroyo/pull/364)
+* Support numeric indexes off of arrays by [@jacksonrnewhouse](https://github.com/jacksonrnewhouse) in [#364](https://github.com/FlowMatrixSystems/flowmatrix/pull/364)
 
 ## Custom consumer groups for Kafka
 
@@ -410,7 +410,7 @@ create table source (
 );
 ```
 
-* Adding support for custom consumer group by [@harshit2283](https://github.com/harshit2283) in [#325](https://github.com/ArroyoSystems/arroyo/pull/325)
+* Adding support for custom consumer group by [@harshit2283](https://github.com/harshit2283) in [#325](https://github.com/FlowMatrixSystems/flowmatrix/pull/325)
 
 ## Restarting failed pipelines
 
@@ -421,34 +421,34 @@ transition to the `failed` state and cease execution.
 
 It's now possible to restart such pipelines from the console or via the new `/api/v1/pipelines/{id}/restart` endpoint.
 
-* Add restarting state and pipeline restart API by [@mwylde](https://github.com/mwylde) in [#356](https://github.com/ArroyoSystems/arroyo/pull/356)
+* Add restarting state and pipeline restart API by [@mwylde](https://github.com/mwylde) in [#356](https://github.com/FlowMatrixSystems/flowmatrix/pull/356)
 
 ## Improvements
 
-* Refactor metrics registration by [@jbeisen](https://github.com/jbeisen) in [#324](https://github.com/ArroyoSystems/arroyo/pull/324)
-* Refactor state tables into their own modules by [@jacksonrnewhouse](https://github.com/jacksonrnewhouse) in [#329](https://github.com/ArroyoSystems/arroyo/pull/329)
-* Bump fluvio to 0.21 by [@jacksonrnewhouse](https://github.com/jacksonrnewhouse) in [#336](https://github.com/ArroyoSystems/arroyo/pull/336)
-* Making the raw identifier robust for numeric aliases by [@edmondop](https://github.com/edmondop) in [#331](https://github.com/ArroyoSystems/arroyo/pull/331)
-* Writing to file:/// should write to absolute paths by [@jacksonrnewhouse](https://github.com/jacksonrnewhouse) in [#344](https://github.com/ArroyoSystems/arroyo/pull/344)
-* Checkpointing: record end time of checkpointing by [@jacksonrnewhouse](https://github.com/jacksonrnewhouse) in [#343](https://github.com/ArroyoSystems/arroyo/pull/343)
-* Remove arroyo-sql-testing's dependency on the controller by [@jbeisen](https://github.com/jbeisen) in [#349](https://github.com/ArroyoSystems/arroyo/pull/349)
-* Do checkpoints in impulse source smoke tests by [@jbeisen](https://github.com/jbeisen) in [#350](https://github.com/ArroyoSystems/arroyo/pull/350)
-* Only generate builder types for source/sink data by [@mwylde](https://github.com/mwylde) in [#347](https://github.com/ArroyoSystems/arroyo/pull/347)
-* Trigger checkpoints and restoring in smoke tests by [@jbeisen](https://github.com/jbeisen) in [#330](https://github.com/ArroyoSystems/arroyo/pull/330)
-* Trigger builds on prs by [@jbeisen](https://github.com/jbeisen) in [#341](https://github.com/ArroyoSystems/arroyo/pull/341)
-* Don't finish pipeline on websocket reset by [@mwylde](https://github.com/mwylde) in [#361](https://github.com/ArroyoSystems/arroyo/pull/361)
-* Add session window smoke tests by [@jbeisen](https://github.com/jbeisen) in [#353](https://github.com/ArroyoSystems/arroyo/pull/353)
-* Add regex dependency to UDF crate by [@mwylde](https://github.com/mwylde) in [#368](https://github.com/ArroyoSystems/arroyo/pull/368)
-* Don't convert select distinct into an update by [@mwylde](https://github.com/mwylde) in [#367](https://github.com/ArroyoSystems/arroyo/pull/367)
-* Update dependencies to address dependabot alerts by [@mwylde](https://github.com/mwylde) in [#369](https://github.com/ArroyoSystems/arroyo/pull/369)
-* Bump [@babel](https://github.com/babel)/traverse from 7.22.5 to 7.23.2 in /arroyo-console by [@dependabot](https://github.com/dependabot) in [#371](https://github.com/ArroyoSystems/arroyo/pull/371)
-* Update with new branding by [@mwylde](https://github.com/mwylde) in [#372](https://github.com/ArroyoSystems/arroyo/pull/372)
+* Refactor metrics registration by [@jbeisen](https://github.com/jbeisen) in [#324](https://github.com/FlowMatrixSystems/flowmatrix/pull/324)
+* Refactor state tables into their own modules by [@jacksonrnewhouse](https://github.com/jacksonrnewhouse) in [#329](https://github.com/FlowMatrixSystems/flowmatrix/pull/329)
+* Bump fluvio to 0.21 by [@jacksonrnewhouse](https://github.com/jacksonrnewhouse) in [#336](https://github.com/FlowMatrixSystems/flowmatrix/pull/336)
+* Making the raw identifier robust for numeric aliases by [@edmondop](https://github.com/edmondop) in [#331](https://github.com/FlowMatrixSystems/flowmatrix/pull/331)
+* Writing to file:/// should write to absolute paths by [@jacksonrnewhouse](https://github.com/jacksonrnewhouse) in [#344](https://github.com/FlowMatrixSystems/flowmatrix/pull/344)
+* Checkpointing: record end time of checkpointing by [@jacksonrnewhouse](https://github.com/jacksonrnewhouse) in [#343](https://github.com/FlowMatrixSystems/flowmatrix/pull/343)
+* Remove flowmatrix-sql-testing's dependency on the controller by [@jbeisen](https://github.com/jbeisen) in [#349](https://github.com/FlowMatrixSystems/flowmatrix/pull/349)
+* Do checkpoints in impulse source smoke tests by [@jbeisen](https://github.com/jbeisen) in [#350](https://github.com/FlowMatrixSystems/flowmatrix/pull/350)
+* Only generate builder types for source/sink data by [@mwylde](https://github.com/mwylde) in [#347](https://github.com/FlowMatrixSystems/flowmatrix/pull/347)
+* Trigger checkpoints and restoring in smoke tests by [@jbeisen](https://github.com/jbeisen) in [#330](https://github.com/FlowMatrixSystems/flowmatrix/pull/330)
+* Trigger builds on prs by [@jbeisen](https://github.com/jbeisen) in [#341](https://github.com/FlowMatrixSystems/flowmatrix/pull/341)
+* Don't finish pipeline on websocket reset by [@mwylde](https://github.com/mwylde) in [#361](https://github.com/FlowMatrixSystems/flowmatrix/pull/361)
+* Add session window smoke tests by [@jbeisen](https://github.com/jbeisen) in [#353](https://github.com/FlowMatrixSystems/flowmatrix/pull/353)
+* Add regex dependency to UDF crate by [@mwylde](https://github.com/mwylde) in [#368](https://github.com/FlowMatrixSystems/flowmatrix/pull/368)
+* Don't convert select distinct into an update by [@mwylde](https://github.com/mwylde) in [#367](https://github.com/FlowMatrixSystems/flowmatrix/pull/367)
+* Update dependencies to address dependabot alerts by [@mwylde](https://github.com/mwylde) in [#369](https://github.com/FlowMatrixSystems/flowmatrix/pull/369)
+* Bump [@babel](https://github.com/babel)/traverse from 7.22.5 to 7.23.2 in /flowmatrix-console by [@dependabot](https://github.com/dependabot) in [#371](https://github.com/FlowMatrixSystems/flowmatrix/pull/371)
+* Update with new branding by [@mwylde](https://github.com/mwylde) in [#372](https://github.com/FlowMatrixSystems/flowmatrix/pull/372)
 
 
 ## Fixes
-* Helm: fix the api replicas parameter name by [@haoxins](https://github.com/haoxins) in [#351](https://github.com/ArroyoSystems/arroyo/pull/351)
-* Cleanup workers in finished state by [@mwylde](https://github.com/mwylde) in [#355](https://github.com/ArroyoSystems/arroyo/pull/355)
-* Fix regression in parsing fields that are not valid Rust idents by [@mwylde](https://github.com/mwylde) in [#358](https://github.com/ArroyoSystems/arroyo/pull/358)
-* Generate serializer items for json schema by [@mwylde](https://github.com/mwylde) in [#362](https://github.com/ArroyoSystems/arroyo/pull/362)
+* Helm: fix the api replicas parameter name by [@haoxins](https://github.com/haoxins) in [#351](https://github.com/FlowMatrixSystems/flowmatrix/pull/351)
+* Cleanup workers in finished state by [@mwylde](https://github.com/mwylde) in [#355](https://github.com/FlowMatrixSystems/flowmatrix/pull/355)
+* Fix regression in parsing fields that are not valid Rust idents by [@mwylde](https://github.com/mwylde) in [#358](https://github.com/FlowMatrixSystems/flowmatrix/pull/358)
+* Generate serializer items for json schema by [@mwylde](https://github.com/mwylde) in [#362](https://github.com/FlowMatrixSystems/flowmatrix/pull/362)
 
-**Full Changelog**: https://github.com/ArroyoSystems/arroyo/compare/v0.6.0...v0.7.0
+**Full Changelog**: https://github.com/FlowMatrixSystems/flowmatrix/compare/v0.6.0...v0.7.0

@@ -1,0 +1,38 @@
+---
+title: Server-Sent Events
+description: "Read from streaming HTTP sources"
+---
+
+[Server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) (also called EventSource)
+is a simple mechanism to stream data over HTTP. Arroyo supports using SSE/EventSource APIs as sources. Arroyo will
+attempt to provide exactly-once semantics on top of SSE by use of the `Last-Event-ID` header, but this relies on
+proper implementation of the protocol by the server.
+
+## Configuring the Connection
+
+SSE/EventSource sources can be created via the Web UI or directly in SQL.
+
+<img
+src="/images/create_sse.png"
+alt="SSE creation flow"
+/>
+
+An SSE connection has several required and optional fields:
+
+| Field | Description | Required | Example |
+| ----- | ----------- | -------- | ------- |
+| endpoint | The endpoint for the SSE server | Yes | `https://api.example.com/v1/events` |
+| headers | A comma-separated list of colon separated key-value pairs of headers that will be sent to the server | No | ```Content-Type:application/json,Authorization: Bearer mytoken```
+| events | A comma-separated list of events to listen for. If not set, all events will be used.| No | `event1,event2` |
+
+For example, in SQL:
+
+```sql
+CREATE TABLE mastodon (
+    value TEXT
+) /WITH (
+    connector = 'sse',
+    endpoint = 'https://api./v1/streaming/public',
+    events = 'update',
+    format = 'raw_string');
+```

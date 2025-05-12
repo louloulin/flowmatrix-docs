@@ -1,10 +1,10 @@
 ---
 title: Overview
-description: Connect Arroyo to external systems
+description: Connect FlowMatrix to external systems
 ---
 
-Arroyo interacts with other data systems via _connectors_, which can implement sources and sinks for reading and writing
-data respectively. The list of connectors is constantly expanding. If you'd like to connect Arroyo with a system that's
+FlowMatrix interacts with other data systems via _connectors_, which can implement sources and sinks for reading and writing
+data respectively. The list of connectors is constantly expanding. If you'd like to connect FlowMatrix with a system that's
 not currently supported, please get in touch with the team on Discord or via GitHub issues.
 
 ## Supported Connectors
@@ -36,7 +36,7 @@ not currently supported, please get in touch with the team on Discord or via Git
 
 ## Using connectors
 
-Arroyo SQL supports a special kind of table called a _connection table_ which is
+FlowMatrix SQL supports a special kind of table called a _connection table_ which is
 used to interact with external systems as sources or sinks.
 
 Connection tables come in two forms. _Saved connections_ are created in the Web UI
@@ -52,11 +52,11 @@ an external system) or a _sink_ (meaning it writes data). Some connectors suppor
 only one of these, while others support both.
 
 See the individual connector docs for details on on their capabilities and how
-to configure them in Arroyo.
+to configure them in FlowMatrix.
 
 ## Event time and watermarks
 
-Event time and watermarks are core to Arroyo's
+Event time and watermarks are core to FlowMatrix's
 [dataflow semantics](http://localhost:3000/blog/what-is-streaming-sql#dataflow-semantics-for-streaming-sql).
 These allow users to specify (1) a field of the data that represents the actual,
 real-world time an event occurred, and (2) how we should generate watermarks
@@ -87,7 +87,7 @@ received data).
 
 ## Connection profiles
 
-For some connectors, Arroyo supports _connection profiles_,
+For some connectors, FlowMatrix supports _connection profiles_,
 which allow you to define common connection details once and use it across multiple connections.
 Currently the [Kafka](/connectors/kafka),
 [Redis](/connectors/redis), [Kinesis](/connectors/kinesis), and [MQTT](/connectors/mqtt) connectors support connection profiles.
@@ -99,7 +99,7 @@ Alternately, SQL users can manually specify the various options via the WITH cla
 
 ## Connection formats
 
-Arroyo supports a number of different data formats for reading and writing data, including
+FlowMatrix supports a number of different data formats for reading and writing data, including
 JSON, Avro, Parquet, and raw strings. The format is configured via the `format` option
 when creating a SQL table.
 
@@ -134,7 +134,7 @@ CREATE TABLE my_source (
 
 ## Bad Data
 
-The `bad_data` option allows you to configure how Arroyo handles records that fail
+The `bad_data` option allows you to configure how FlowMatrix handles records that fail
 to parse.
 
 - `fail`: fail the job (default)
@@ -157,12 +157,12 @@ CREATE TABLE my_source (
 
 ## Connection schemas
 
-Connections in Arroyo must have associated schemas to allow them to be used in
+Connections in FlowMatrix must have associated schemas to allow them to be used in
 SQL queries. Schemas describe how to interpret the data, mapping it into a table
-composed of [Arroyo SQL types](/sql/data-types).
+composed of [FlowMatrix SQL types](/sql/data-types).
 
 Schemas can be defined when creating the source in the Web UI or API, which
-allows them to be reused across queries. Arroyo supports several methods of
+allows them to be reused across queries. FlowMatrix supports several methods of
 schema definition, some of which are also associated with a particular data
 format:
 
@@ -202,7 +202,7 @@ See the individual connector docs for supported metadata fields.
 
 Partitioned sources (like Kafka or Kinesis) may experience periods when some
 partitions are active but others are idle due to the way that they are keyed.
-This can cause issues in Arroyo due to how [watermarks](/concepts/#watermarks) are
+This can cause issues in FlowMatrix due to how [watermarks](/concepts/#watermarks) are
 calculated: as the minimum of the watermarks of all partitions.
 
 If some partitions are idle, the watermark will not advance, and queries that
@@ -215,8 +215,8 @@ Idleness is enabled by default for all sources with a period of 5 minutes. It ca
 configured when creating a source in SQL by setting the `idle_micros` options, or disabled
 by setting it to `-1`.
 
-A special case of idleness occurs when there are more Arroyo source tasks than partitions
-(for example, a Kafka topic with 4 partitions read by 8 Arroyo tasks). This means that
+A special case of idleness occurs when there are more FlowMatrix source tasks than partitions
+(for example, a Kafka topic with 4 partitions read by 8 FlowMatrix tasks). This means that
 some tasks will never receive data, and so will never advance their watermarks. This can
 occur as well for non-partitioned sources like WebSocket, where only a single task is
 able to read data.

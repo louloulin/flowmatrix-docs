@@ -1,6 +1,6 @@
-# Arroyo Docs
+# FlowMatrix Docs
 
-This repo contains the source code to documentation website (https://doc.arroyo.dev) for [Arroyo](https://arroyo.dev).
+This repo contains the source code to documentation website (https://doc.flowmatrix.dev) for [FlowMatrix](https://flowmatrix.dev).
 
 ## Doc development
 

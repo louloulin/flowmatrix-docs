@@ -1,16 +1,16 @@
 ---
 title: First pipeline
-description: "Build your first Arroyo pipeline"
+description: "Build your first FlowMatrix pipeline"
 ---
 
-Once you've set up an Arroyo cluster, you're ready to start building pipelines. This tutorial will walk you through how
-to use Arroyo to process data in real-time.
+Once you've set up an FlowMatrix cluster, you're ready to start building pipelines. This tutorial will walk you through how
+to use FlowMatrix to process data in real-time.
 
-Start by opening up the Arroyo Web UI at http://localhost:5115.
+Start by opening up the FlowMatrix Web UI at http://localhost:5115.
 
 ## Creating a demo source
 
-Arroyo includes several generated data sources we can use to try out the engine. To create one, go to the Connections
+FlowMatrix includes several generated data sources we can use to try out the engine. To create one, go to the Connections
 tab on the left menu, and click "Create Connection".
 
 From there, you can choose what type of connection you would like to create. For this tutorial, we're going to create a
@@ -52,7 +52,7 @@ each input event will result in a single output line.
 
 ### Windows
 
-Many streaming pipelines involve working with time in some way. Arroyo supports
+Many streaming pipelines involve working with time in some way. FlowMatrix supports
 a few different ways of expressing computations over the time characteristic of
 our data. Let's add a sliding window (called `hop` in SQL) to perform a
 time-oriented aggregation:
@@ -68,9 +68,9 @@ This query computes an aggregate function (avg) over a sliding window with a 10 
 seconds. You can preview this and see that it does what you would expect: produce a result every 2 seconds for
 the average bid price for all bids in the past ten seconds.
 
-Arroyo supports complex analytical SQL functions, like SQL windows. Let's use that capability to implement query 5
+FlowMatrix supports complex analytical SQL functions, like SQL windows. Let's use that capability to implement query 5
 of the Nexmark benchmark, which asks us to find the top 5 auctions by the number of bids over a sliding window. In
-Arroyo, that query looks like this:
+FlowMatrix, that query looks like this:
 
 ```sql
 SELECT auction, row_num FROM (
@@ -89,14 +89,14 @@ Plug that into the editor and preview it, validating the results look like we ex
 
 Once we're happy with it, we can run the pipeline for real. Click the "Launch" button, give it a name
 (for example "top_auctions"). Because we didn't specify a sink in the query (via an `INSERT INTO` statement),
-Arroyo will automatically add a Web sink so that we can view the results in the Web UI. Click "Start" to create
+FlowMatrix will automatically add a Web sink so that we can view the results in the Web UI. Click "Start" to create
 the pipeline.
 
 This will start the pipeline. Once it's running, we can click nodes on the pipeline dataflow graph and
 see metrics for that operator. Clicking into the Outputs tab we can tail the results for the pipeline. The Checkpoints
-tab shows metadata for the checkpoints for the pipeline. Arroyo regularly takes consistent checkpoints of the state
+tab shows metadata for the checkpoints for the pipeline. FlowMatrix regularly takes consistent checkpoints of the state
 of the pipeline (using a variation of asynchronous barrier snapshotting algorithm described in
 [this paper](https://arxiv.org/abs/1506.08603)) so we can recover from failure.
 
-We can also control execution of the pipeline, stopping and starting it. Before stopping the pipeline Arroyo takes
+We can also control execution of the pipeline, stopping and starting it. Before stopping the pipeline FlowMatrix takes
 a final checkpoint so that we can restart it without any data loss.

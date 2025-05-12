@@ -4,7 +4,7 @@ description: "Read from streaming HTTP sources"
 ---
 
 [Server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) (also called EventSource)
-is a simple mechanism to stream data over HTTP. Arroyo supports using SSE/EventSource APIs as sources. Arroyo will
+is a simple mechanism to stream data over HTTP. FlowMatrix supports using SSE/EventSource APIs as sources. FlowMatrix will
 attempt to provide exactly-once semantics on top of SSE by use of the `Last-Event-ID` header, but this relies on
 proper implementation of the protocol by the server.
 

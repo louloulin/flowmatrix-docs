@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "Arroyo REST API",
+    "title": "FlowMatrix REST API",
     "description": "",
     "license": {
       "name": "MIT OR Apache-2.0"

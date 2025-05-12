@@ -3,8 +3,8 @@ title: Kinesis
 description: "Use Amazon Kinesis streams as sources and sinks"
 ---
 
-Arroyo provides sources and sinks for [Amazon Kinesis](https://aws.amazon.com/kinesis/) for reading and writing data from Kinesis streams.
-Kinesis's real-time data streaming capabilities make it a great fit for stream processing applications like Arroyo.
+FlowMatrix provides sources and sinks for [Amazon Kinesis](https://aws.amazon.com/kinesis/) for reading and writing data from Kinesis streams.
+Kinesis's real-time data streaming capabilities make it a great fit for stream processing applications like FlowMatrix.
 
 ## Configuring the Connection
 
@@ -28,7 +28,7 @@ A Kinesis connection has several required and optional fields:
 ## Kinesis Sources
 
 Kinesis sources can be created via the Web UI, the API, or directly in SQL.
-Kinesis sources implement exactly-once semantics by storing the last-read sequence number in Arroyo's state.
+Kinesis sources implement exactly-once semantics by storing the last-read sequence number in FlowMatrix's state.
 To query from Kinesis using SQL, use a CREATE TABLE statement like
 ```sql
 CREATE TABLE orders (

@@ -3,12 +3,12 @@ title: Kafka
 description: "Use Kafka topics as sources and sinks"
 ---
 
-Arroyo provides sources and sinks for [Apache Kafka](https://kafka.apache.org/)
+FlowMatrix provides sources and sinks for [Apache Kafka](https://kafka.apache.org/)
 for consistently reading and writing data from Kafka topics using exactly-once
 semantics. Kafka's distributed log model makes it a great fit for stream
-processing applications like Arroyo.
+processing applications like FlowMatrix.
 
-Arroyo supports Kafka clusters that are self-hosted, using Amazon
+FlowMatrix supports Kafka clusters that are self-hosted, using Amazon
 MSK<sup>1</sup>, and Confluent Cloud.
 
 *<sup>1</sup> Note that MSK Serverless is not currently supported due to its
@@ -56,7 +56,7 @@ Kafka source is defined by a topic name and a schema.
 Schemas can be defined via json-schema, or automatically configured via
 Confluent Schema Registry.
 
-Kakfa sources implement exactly-once semantics by storing the last-read offset in Arroyo's state.
+Kakfa sources implement exactly-once semantics by storing the last-read offset in FlowMatrix's state.
 Additionally, you can set `source.read_mode` to `read_committed` to ensure that only committed messages are read.
 
 ### Source metadata
@@ -87,12 +87,12 @@ Data is staged within each epoch of the checkpointing system,
 and then committed through a two-phase protocol once all data is staged.
 Currently the system does not cleanly recover from failures during the commit phase,
 as this requires Kafka to be better able to participate in a two-phase commit.
-See [this issue](https://github.com/ArroyoSystems/arroyo/issues/224) for more details.
+See [this issue](https://github.com/FlowMatrixSystems/flowmatrix/issues/224) for more details.
 
 ### Producer metadata
 
 Messages produced to Kafka include data—a sequence of bytes typically encoded in
-a format like JSON, Avro, or Protobuf—as well a metadata. The Arroyo Kafka
+a format like JSON, Avro, or Protobuf—as well a metadata. The FlowMatrix Kafka
 connector supports setting metadata fields—currently timestamp and key—to
 support more powerful integrations. For example:
 

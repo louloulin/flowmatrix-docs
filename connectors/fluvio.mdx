@@ -3,10 +3,10 @@ title: Fluvio
 description: "Use Fluvio topics as sources and sinks"
 ---
 
-Arroyo provides sources and sinks for [Fluvio](https://fluvio.io/) for
+FlowMatrix provides sources and sinks for [Fluvio](https://fluvio.io/) for
 consistently reading and writing data from Fluvio topics. Fluvio is a
 distributed streaming platform built on top of Rust and Kubernetes. Fluvio has
-support for simple, stateless processing, but with Arroyo it can be extended to
+support for simple, stateless processing, but with FlowMatrix it can be extended to
 perform complex, stateful processing and analytics.
 
 ## Configuring the Connection
@@ -35,7 +35,7 @@ FLuvio source is defined by a topic name and a schema.
 Schemas can be defined via json-schema or via SQL DDL statements.
 
 Fluvio sources implement exactly-once semantics by storing the last-read offset
-in Arroyo's state.
+in FlowMatrix's state.
 
 ## Fluvio Sinks
 

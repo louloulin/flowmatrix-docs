@@ -3,7 +3,7 @@ title: Delta Lake Sink
 description: "Write Parquet files to a Delta Lake Table"
 ---
 
-Data from Arroyo can be written to a Delta Lake table using the `delta` sink.
+Data from FlowMatrix can be written to a Delta Lake table using the `delta` sink.
 This sink shares most of its code with the [File System Sink](/connectors/filesystem),
 and as such, it supports all of the same configuration options.
 
@@ -28,7 +28,7 @@ INSERT INTO delta_sink SELECT id, name, age FROM my_source;
 ```
 
 ## Commit Behavior
-Arroyo commits to Delta Lake tables using the same two-phase commit protocol as the File System Sink.
+FlowMatrix commits to Delta Lake tables using the same two-phase commit protocol as the File System Sink.
 The files to be written are staged and then committed after taking a reliable checkpoint.
 Idempotence is ensured by validating the table version before appending and, if different than expected,
 checking all intervening versions to ensure that the data was not already added.

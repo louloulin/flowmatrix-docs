@@ -1,9 +1,9 @@
 ---
 title: UDF Overview
-description: Extending Arroyo with user-defined functions
+description: Extending FlowMatrix with user-defined functions
 ---
 
-Arroyo SQL can be extended with user-defined functions, written in Rust or
+FlowMatrix SQL can be extended with user-defined functions, written in Rust or
 Python. UDFs can be defined as part of the SQL API call, or via the Web UI.
 
 UDFs are defined as Rust functions. The parameters and return type of the UDF
@@ -14,13 +14,13 @@ For String and Binary types (`TEXT` `BYTEA` in SQL), UDFs use the reference type
 (`&str` and `&[u8]`) for arguments and the owned types (`String` and `Vec<u8>`)
 for return values.
 
-Arroyo UDFs are annotated with the `#[udf]` in the arroyo\_udf\_plugin crate.
+FlowMatrix UDFs are annotated with the `#[udf]` in the flowmatrix\_udf\_plugin crate.
 
 Here's an example of a simple UDF that squares an integer:
 
 <CodeGroup>
   ```python Python
-  from arroyo_udf import udf
+  from flowmatrix_udf import udf
 
   @udf
   def my_square(x: int) -> int:
@@ -28,7 +28,7 @@ Here's an example of a simple UDF that squares an integer:
   ```
 
   ```rust Rust
-  use arroyo_udf_plugin::udf;
+  use flowmatrix_udf_plugin::udf;
 
   #[udf]
   fn my_square(x: u64) -> u64 {
@@ -85,7 +85,7 @@ Global UDFs are available in all pipelines, but will be shadowed by local UDFs w
 
 UDFs are expected to run and return quickly (think microseconds, not milliseconds). This means they
 shouldn't do any blocking work (like making network requests) or CPU-intensive computations. Within
-the Arroyo dataflow, UDFs are treated as normal scalar functions. They run serially against a batch of
+the FlowMatrix dataflow, UDFs are treated as normal scalar functions. They run serially against a batch of
 data, and while they run forward progress is blocked.
 
 If you need to use IO, CPU-intensive computations, or other usecases for long-running UDFs, see

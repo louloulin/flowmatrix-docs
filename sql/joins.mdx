@@ -1,9 +1,9 @@
 ---
 title: Joins
-description: 'Joining data in Arroyo SQL'
+description: 'Joining data in FlowMatrix SQL'
 ---
 
-Arroyo SQL supports various types of joins over streaming and batch data sources.
+FlowMatrix SQL supports various types of joins over streaming and batch data sources.
 
 ## Window joins
 
@@ -90,9 +90,9 @@ ON u.user_id = a.user_id;
 
 As updating joins are not time-bounded, there is nothing that bounds the state
 size; in principle they must remember all data the pipeline has seen. This is
-not usually practical, so Arroyo by default uses a TTL of 1 day after which join
+not usually practical, so FlowMatrix by default uses a TTL of 1 day after which join
 state is discarded. This may be configured via `SET updating_ttl`. See the
-[updating docs](https://doc.arroyo.dev/sql/updating-tables#ttls) for more
+[updating docs](https://doc.flowmatrix.dev/sql/updating-tables#ttls) for more
 details.
 
 ## Lookup joins

@@ -3,7 +3,7 @@ title: Async Rust UDFs
 description: 'Async User-defined functions (UDFs)'
 ---
 
-In addition to traditional [scalar UDFs](/udfs/overview), Arroyo supports *async UDFs*, which
+In addition to traditional [scalar UDFs](/udfs/overview), FlowMatrix supports *async UDFs*, which
 can make use of `async` Rust functions. Currently, Python UDFs do not support
 async functions.
 
@@ -20,7 +20,7 @@ an AI model.
 
 Async UDFs allow you to do all of these things, without blocking the pipeline.
 Async UDFs are defined as a Rust async fn, supporting non-blocking IO. Then
-within the Arroyo runtime, many instances of the UDF can be run in parallel,
+within the FlowMatrix runtime, many instances of the UDF can be run in parallel,
 with a configurable concurrency limit.
 
 Note that async UDFs, like all Rust async functions, should not block or do
@@ -52,7 +52,7 @@ tokio-postgres = "0.7"
 async-trait = "0.1.68"
 */
 
-use arroyo_udf_plugin::udf;
+use flowmatrix_udf_plugin::udf;
 use tokio_postgres::{NoTls, Error, Client};
 use async_trait::async_trait;
 use std::sync::Arc;
@@ -62,7 +62,7 @@ static CLIENT: OnceCell<Arc<Client>> = OnceCell::const_new();
 
 async fn get_client() -> Arc<Client> {
     CLIENT.get_or_init(|| async {
-        let conn_str = "host=localhost user=arroyo password=arroyo dbname=my_db";
+        let conn_str = "host=localhost user=flowmatrix password=flowmatrix dbname=my_db";
 
         let (client, connection) = tokio_postgres::connect(conn_str, NoTls).await.unwrap();
 

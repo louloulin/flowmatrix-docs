@@ -4,7 +4,7 @@ description: "Publish and consume from Core NATS and Jetstream"
 ---
 
 [NATS](https://nats.io) is a messaging and queueing system designed for
-simplicity and performance. Arroyo includes sources and sinks for Core NATS and
+simplicity and performance. FlowMatrix includes sources and sinks for Core NATS and
 NATS Jetstream, which layers on persistence and delivery guarantees.
 
 
@@ -25,12 +25,12 @@ An NATS connection has several required and optional fields:
 | auth.jwt | JWT token string used for JWT-based authentication with NATS | If `auth.type = 'jwt'` | `eyJhbGciOiJFZERTQSJ9...` |
 | auth.nkey_seed | NKEY seed string (private key) used to sign authentication challenges when using JWT-based authentication | If `auth.type = 'jwt'` | `SUAFK5ZQJXPQ...` |
 | type | Either 'source' or 'sink'             | Yes | source |
-| stream | The NATS stream to read from, for jetstream | One of stream or subject | events-arroyo |
+| stream | The NATS stream to read from, for jetstream | One of stream or subject | events-flowmatrix |
 | subject | The Core NATS subject to read or write from | One of stream or subject | events |
 | consumer.ack_policy | One of 'Explicit', 'None', or 'All' |  No | Explicit |
 | consumer.replay_policy | One of 'Original' or 'Instant' | No | Instant |
 | consumer.ack_wait | Duration in seconds that the server will wait for an ack for any individual message once it has been delivered to a consumer | No | 300 |
-| consumer.description | Description of the consumer | No | arroyo-consumer |
+| consumer.description | Description of the consumer | No | flowmatrix-consumer |
 | consumer.filter_subjects | Comma-separated list of subjects the consumer should filter on | No | events1,events2 |
 | consumer.num_replicas | Number of replicas for the consumer's state | No | 3 |
 | consumer.inactive_threshold | Duration in seconds before inactive consumers will be cleaned up | No | 600 |
@@ -46,7 +46,7 @@ See the [NATS documentation](https://docs.nats.io/) for more explanation of thes
 
 ## Connection Profiles
 
-Arroyo connectors can split their configuration into two parts: the _profile_
+FlowMatrix connectors can split their configuration into two parts: the _profile_
 config, which covers the common details of how to connect and authenticate
 against a cluster, and the _table_ config which is specific to a particular
 instance of the connector.

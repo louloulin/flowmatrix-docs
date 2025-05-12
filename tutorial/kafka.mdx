@@ -1,9 +1,9 @@
 ---
 title: Kafka
-description: "Connect Arroyo to a Kafka topic"
+description: "Connect FlowMatrix to a Kafka topic"
 ---
 
-To consume real data, you can connect Arroyo to a Kafka cluster and create sources from topics. This tutorial will
+To consume real data, you can connect FlowMatrix to a Kafka cluster and create sources from topics. This tutorial will
 cover setting up a local Kafka broker and generating some sample data.
 
 ## Setting up Kafka
@@ -65,15 +65,15 @@ Now clicking back into the `orders` topic on the Topics page, you should see dat
 ## Creating a Kafka connection
 
 Now that we have a Kafka broker running and some data being generated, we can
-connect it to Arroyo by creating what's called a "Connection," which is an
-external system that Arroyo can read from (as a source) or write to (as a sink).
+connect it to FlowMatrix by creating what's called a "Connection," which is an
+external system that FlowMatrix can read from (as a source) or write to (as a sink).
 
 There are two ways to do this: we can either create a connection in the Web UI,
 or directly in SQL using [DDL statements](/sql/ddl). We'll start by creating the
 source connection in the Web UI by opening it at http://localhost:5115.
 
-A Connection in Arroyo is an external system that Arroyo will read or write to. To create a Kafka connection, click
-the "Connections" tab in the Arroyo UI and then click "Create Connection."
+A Connection in FlowMatrix is an external system that FlowMatrix will read or write to. To create a Kafka connection, click
+the "Connections" tab in the FlowMatrix UI and then click "Create Connection."
 
 Find Kafka in the list of connectors, and click "Create."
 
@@ -81,7 +81,7 @@ Next we will need to configure the connection information for the Kafka cluster.
 table configuration so that it can be shared across many different connections.
 
 At the bottom left, click "Create new". How you configure the connection will depend on how you're
-running Arroyo.
+running FlowMatrix.
 
 For each method, you will use the following settings:
 
@@ -90,8 +90,8 @@ For each method, you will use the following settings:
 
 <Card>
     <Tabs>
-        <Tab title="Local Arroyo">
-            If you're running Arroyo locally, configure your kafka connection with:
+        <Tab title="Local FlowMatrix">
+            If you're running FlowMatrix locally, configure your kafka connection with:
 
             ```
             Bootstrap Servers: localhost:9092
@@ -103,8 +103,8 @@ For each method, you will use the following settings:
             information on how to set this up can be found in [this StackOverflow question](https://stackoverflow.com/questions/51630260/connect-to-kafka-running-in-docker)
         </Tab>
         <Tab title="Docker on Linux">
-            If you're running Arroyo in Docker on Linux, you will need to do a bit more setup
-            to enable Arroyo to talk to Kafka.
+            If you're running FlowMatrix in Docker on Linux, you will need to do a bit more setup
+            to enable FlowMatrix to talk to Kafka.
 
             First, you will need find your bridge IP address. You can do this byw
             running
@@ -159,7 +159,7 @@ starting from the latest offset.
 
 The other options can be left as default. Click "Next" to continue.
 
-Arroyo sources need to have a defined format and schema so that data can be
+FlowMatrix sources need to have a defined format and schema so that data can be
 deserialized and used in SQL queries. The Kafka data generator is configured to
 produce data in JSON format, so we'll select that as the data format.
 
@@ -187,7 +187,7 @@ the topic we generated has an associated schema in the schema registry, we'll us
 Click "Continue" to finish configuring the source table. On the final screen, we
 can give the connection a name `orders`, then test that it's valid.
 
-When you click "Test Connection," Arroyo will attempt to connect to Kafka with the configured bootstrap servers,
+When you click "Test Connection," FlowMatrix will attempt to connect to Kafka with the configured bootstrap servers,
 validates that the topic exists, and tries reading a message from the topic.
 
 If everything is good, click "Create" to create the connection.
@@ -221,7 +221,7 @@ GROUP BY store_id, hop(interval '2 seconds', interval '10 seconds');
 
 ## Inserting into a Kafka sink
 
-There are two ways to create connections in Arroyo. Previously we created a
+There are two ways to create connections in FlowMatrix. Previously we created a
 Kafka source connection via the Web UI, and now we're going to create a Kafka
 sink via SQL.
 

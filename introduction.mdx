@@ -1,21 +1,21 @@
 ---
 title: Introduction
-description: 'Arroyo Stream Processing Engine'
+description: 'FlowMatrix Stream Processing Engine'
 ---
 
-[Arroyo](https://arroyo.dev) is a distributed stream processing engine written in Rust, designed to efficiently
+[FlowMatrix](https://flowmatrix.dev) is a distributed stream processing engine written in Rust, designed to efficiently
 perform stateful computations on streams of data. Unlike traditional batch processors, streaming engines can operate
 on both bounded and unbounded sources, emitting results as soon as they are available.
 
-In short: Arroyo lets you ask complex questions of high-volume real-time data with sub-second results.
+In short: FlowMatrix lets you ask complex questions of high-volume real-time data with sub-second results.
 
 <img
   src="/images/header_image.png"
-  alt="Arroyo"
+  alt="FlowMatrix"
   style={{ borderRadius: '0.5rem' }}
 />
 
-Arroyo can be self-hosted, or used via the [Arroyo Cloud](https://arroyo.dev/) service managed by Arroyo Systems.
+FlowMatrix can be self-hosted, or used via the [FlowMatrix Cloud](https://flowmatrix.dev/) service managed by FlowMatrix Systems.
 
 ## Features
 
@@ -34,73 +34,73 @@ Some example use cases include:
 - Real-time ingestion into your data warehouse or data lake
 - Real-time ML feature generation
 
-## Why Arroyo
+## Why FlowMatrix
 
 There are already a number of existing streaming engines out there, including [Apache Flink](https://flink.apache.org),
 [Spark Streaming](https://spark.apache.org/docs/latest/streaming-programming-guide.html), and
 [Kafka Streams](https://kafka.apache.org/documentation/streams/). Why create a new one?
 
-- **Serverless operations**: Arroyo pipelines are designed to run in modern cloud environments, supporting seamless scaling,
+- **Serverless operations**: FlowMatrix pipelines are designed to run in modern cloud environments, supporting seamless scaling,
   recovery, and rescheduling
 - **High performance SQL**: SQL is a first-class concern, with consistently excellent performance
-- **Designed for everyone**: Arroyo cleanly separates the pipeline APIs from its internal implementation. You don't
+- **Designed for everyone**: FlowMatrix cleanly separates the pipeline APIs from its internal implementation. You don't
   need to be a streaming expert to build real-time data pipelines.
 
 ## Getting Started
 
-Arroyo ships as a single binary, which can be easily installed locally or run in a container.
+FlowMatrix ships as a single binary, which can be easily installed locally or run in a container.
 
 <CodeGroup>
 ```shellsession MacOS
-brew install arroyosystems/tap/arroyo
+brew install flowmatrixsystems/tap/flowmatrix
 ```
 
 ```shellsession Linux
-curl -LsSf https://arroyo.dev/install.sh | sh
+curl -LsSf https://flowmatrix.dev/install.sh | sh
 ```
 
 ```shellsession Docker
 docker run -p 5115:5115 \
-      ghcr.io/arroyosystems/arroyo:latest
+      ghcr.io/flowmatrixsystems/flowmatrix:latest
 ```
 
 ```shellsession Kubernetes
-helm repo add arroyo https://helm.arroyo.dev
-helm install arroyo arroyo/arroyo
+helm repo add flowmatrix https://helm.flowmatrix.dev
+helm install flowmatrix flowmatrix/flowmatrix
 ```
 
 </CodeGroup>
 
  See the
-[getting started guide](/getting-started) to get up and running with a local Arroyo deployment.
+[getting started guide](/getting-started) to get up and running with a local FlowMatrix deployment.
 
 
 ### In production
 
-Arroyo supports several deployment targets for production use, including native support for Kubernetes. See the
+FlowMatrix supports several deployment targets for production use, including native support for Kubernetes. See the
 [deployment docs](/deployment/overview) for more information.
 
 ## License
 
-Arroyo is fully open-source under the [Apache 2.0 license](https://github.com/ArroyoSystems/arroyo/tree/master/LICENSE-apache).
+FlowMatrix is fully open-source under the [Apache 2.0 license](https://github.com/FlowMatrixSystems/flowmatrix/tree/master/LICENSE-apache).
 
 ## Support
 
 ### Commerical support
 
-Commercial support is offered by [Arroyo Systems](https://www.arroyo.dev), the creators of Arroyo. Reach out to
-[support@arroyo.systems](mailto:support@arroyo.systems) to get in touch.
+Commercial support is offered by [FlowMatrix Systems](https://www.flowmatrix.dev), the creators of FlowMatrix. Reach out to
+[support@flowmatrix.systems](mailto:support@flowmatrix.systems) to get in touch.
 
 ### Community support
 
-Community support is offered via the [Arroyo Discord](https://discord.gg/cjCr5rVmyR) where the Arroyo development
-team and community are actively engaged in helping users get started and solve their probelms with Arroyo.
+Community support is offered via the [FlowMatrix Discord](https://discord.gg/cjCr5rVmyR) where the FlowMatrix development
+team and community are actively engaged in helping users get started and solve their problems with FlowMatrix.
 
 ## Telemetry
 
-By default, Arroyo collects limited and anonymous usage data to help us
+By default, FlowMatrix collects limited and anonymous usage data to help us
 understand how the system is being used and to help prioritize future
 development.
 
 You can opt out of telemetry by setting `DISABLE_TELEMETRY=true` when running
-Arroyo services.
+FlowMatrix services.

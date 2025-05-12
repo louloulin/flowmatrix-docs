@@ -3,7 +3,7 @@ title: Rust UDAFs
 description: User-defined aggregate functions
 ---
 
-Arroyo SQL supports User-Defined Aggregate Functions, allowing you to extend the
+FlowMatrix SQL supports User-Defined Aggregate Functions, allowing you to extend the
 system's capabilities with custom aggregation logic written in Rust. UDAFs are
 deployed and managed in the same way as scalar UDFs; see the [UDF
 docs](/udfs/overview) for details.
@@ -22,7 +22,7 @@ parameters.
 Here's a simple UDAF for calculating the median of a set of integers:
 
 ```rust
-use arroyo_sql_plugin::udf;
+use flowmatrix_sql_plugin::udf;
 
 #[udf]
 fn my_median(mut args: Vec<i64>) -> Option<f64> {

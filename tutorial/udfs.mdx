@@ -3,11 +3,11 @@ title: Parsing with UDFs
 description: "Use user-defined functions to parse custom formats"
 ---
 
-Arroyo has built-in support for a number of [data formats](/connectors/formats), including JSON,
+FlowMatrix has built-in support for a number of [data formats](/connectors/formats), including JSON,
 Avro, and Parquet. But what if you need to support reading and writing data in a custom format?
 
 [User-defined functions (UDFs)](/udfs/overview) to the rescue! UDFs allow you to write custom code
-(currently in Rust) that can be used in your SQL queries. This can extend Arroyo in powerful ways,
+(currently in Rust) that can be used in your SQL queries. This can extend FlowMatrix in powerful ways,
 implementing complex logic, new types of aggregations, and more.
 
 In this tutorial we'll walk through how to use UDFs to parse a custom format, in
@@ -30,11 +30,11 @@ For example:
 
 ## Set up
 
-Before you begin, you will need a running Arroyo cluster. You can follow the instructions in the
+Before you begin, you will need a running FlowMatrix cluster. You can follow the instructions in the
 [getting started guide](/getting-started).
 
-We will also be using Arroyo's
-[StreamGen](https://github.com/ArroyoSystems/streamgen) tool to generate some
+We will also be using FlowMatrix's
+[StreamGen](https://github.com/FlowMatrixSystems/streamgen) tool to generate some
 sample data (you can also use your own data via Kafka or one of the other
 [sources](/connectors) if you prefer).
 
@@ -45,7 +45,7 @@ $ cargo install streamgen
 ```
 
 Or you can download a pre-built binary from the
-[releases page](https://github.com/ArroyoSystems/streamgen/releases).
+[releases page](https://github.com/FlowMatrixSystems/streamgen/releases).
 
 Once everything is set up you, should be able to run
 
@@ -68,7 +68,7 @@ Options:
 ## Generate some data
 
 Let's start by generating some sample data. We'll use StreamGen to generate a
-stream of CLF records, and send them to Arroyo via [Server-Sent Events](/connectors/server-sent-events).
+stream of CLF records, and send them to FlowMatrix via [Server-Sent Events](/connectors/server-sent-events).
 
 ```bash
 $ streamgen --format string common-log sse --port 9563
@@ -96,9 +96,9 @@ data: 44.133.114.73 - zoie_quibusdam [30/Nov/2023:13:51:26 -0800] "GET /sbin/jac
 
 ## Create the source
 
-Now that we have a stream of data, we'll set up an Arroyo source to read it.
+Now that we have a stream of data, we'll set up an FlowMatrix source to read it.
 
-Open up Arroyo at [http://localhost:5115](http://localhost:5115),  to the "Pipelines" tab, then click "Create Pipeline."
+Open up FlowMatrix at [http://localhost:5115](http://localhost:5115),  to the "Pipelines" tab, then click "Create Pipeline."
 navigate
 This will open up the pipeline editor.
 
@@ -118,7 +118,7 @@ select * from logs;
 
 <Note>
   The `host.docker.internal` hostname is a special hostname that Docker for Mac sets up to allow
-  containers to access services running on the host machine. If you're running Arroyo
+  containers to access services running on the host machine. If you're running FlowMatrix
   directly on your machine or in Docker on Linux, you should use `localhost` instead.
 </Note>
 
@@ -126,12 +126,12 @@ Click "Start Preview" to run the pipeline. You should see a stream of records
 flowing through the pipeline.
 
 <Frame>
-  <img src="/images/tutorials/udfs/preview_tail.png" alt="The Arroyo UI showing the preview output of the pipeline" />
+  <img src="/images/tutorials/udfs/preview_tail.png" alt="The FlowMatrix UI showing the preview output of the pipeline" />
 </Frame>
 
 <Warning>
   If you see an error in the console that says `Error while reading from EventSource`, that means
-  Arroyo was not able to connect to the SSE server. Make sure the server is running and that
+  FlowMatrix was not able to connect to the SSE server. Make sure the server is running and that
   you have the correct hostname and port.
 </Warning>
 
@@ -152,7 +152,7 @@ For the actual parsing, we'll rely on the Rust [regex](https://docs.rs/regex) cr
 To create a new UDF, click the "UDFs" tab in the pipeline editor, then click "New."
 
 <Frame>
-  <img src="/images/tutorials/udfs/create.png" alt="Creating a UDF in Arroyo" />
+  <img src="/images/tutorials/udfs/create.png" alt="Creating a UDF in FlowMatrix" />
 </Frame>
 
 Then paste the following UDF code into the editor:
@@ -165,7 +165,7 @@ serde_json = "1"
 chrono = "0.4"
 */
 
-use arroyo_udf_plugin::udf;
+use flowmatrix_udf_plugin::udf;
 use regex::Regex;
 use serde_json::json;
 use chrono::DateTime;
@@ -199,7 +199,7 @@ fn parse_log(s: &str) -> Option<String> {
 }
 ```
 
-A few things to note here, if you're not familiar with Rust and Arroyo UDFs:
+A few things to note here, if you're not familiar with Rust and FlowMatrix UDFs:
 
 1.  The special `dependencies` comment at the top is used to specify the Rust
     crates (libraries) that are used by the UDF, specified in the same format as
@@ -248,12 +248,12 @@ select parse_log(value) from logs;
 ```
 
 But there's one other thing we need to take into account when consuming data in
-Arroyo: time. Arroyo is built around [*event-time processing*](/concepts#event-time), which means that
+FlowMatrix: time. FlowMatrix is built around [*event-time processing*](/concepts#event-time), which means that
 records can be processed according to the time they occur, rather than the time
-they are processed by Arroyo. This is important for handling out-of-order and late data.
+they are processed by FlowMatrix. This is important for handling out-of-order and late data.
 
 In this case, we want to use the timestamp from the log record as the event time. To do this,
-we will rely on Arroyo's ability to override event time as part of the CREATE TABLE statement
+we will rely on FlowMatrix's ability to override event time as part of the CREATE TABLE statement
 via *virtual columns*.
 
 ```sql
@@ -276,7 +276,7 @@ Here we've added two new columns to the table:
 *   event\_time contains the timestamp from the log record; we use the
     `extract_json_string` function to extract the timestamp from the JSON string.
 
-Currently Arroyo does not support virtual columns that depend on other virtual columns, so we
+Currently FlowMatrix does not support virtual columns that depend on other virtual columns, so we
 have to repeat the `parse_log` call in the `event_time` column.
 
 ## Let's stop some attacks
@@ -310,7 +310,7 @@ number of records in each group. We then filter the results to only include grou
 ## Doing something about it
 
 Now that we've identified the hosts that are making a lot of unauthorized requests, we can do
-something about it. For example, we could use Arroyo's [Webhook sink](/connectors/polling-http) to tell
+something about it. For example, we could use FlowMatrix's [Webhook sink](/connectors/polling-http) to tell
 our firewall to block the offending IP address.
 
 ```sql
@@ -332,7 +332,7 @@ WHERE attempts > 10;
 To try this out, you can use a service like [RequestBin](https://requestbin.com/) to create a
 temporary webhook URL that will show you the requests that are being sent.
 
-Note that when running in preview mode, Arroyo will not actually send the requests to the webhook
+Note that when running in preview mode, FlowMatrix will not actually send the requests to the webhook
 and will instead log them to the console. To send the webhooks for real, you'll need to start the
 pipeline with the "Launch" button.
 

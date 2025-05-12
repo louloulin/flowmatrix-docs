@@ -1,13 +1,13 @@
 ---
 title: DDL Statements
-description: 'creating tables and views in Arroyo SQL'
+description: 'creating tables and views in FlowMatrix SQL'
 ---
 
-In addition to its SELECT capabilities Arroyo supports several Data Description Language (DDL) capabilities.
+In addition to its SELECT capabilities FlowMatrix supports several Data Description Language (DDL) capabilities.
 
 ## CREATE TABLE
 
-Arroyo's CREATE TABLE statements come in three flavors: Create Table As, Memory Table and Connection Table.
+FlowMatrix's CREATE TABLE statements come in three flavors: Create Table As, Memory Table and Connection Table.
 
 ### CREATE TABLE AS
 
@@ -35,7 +35,7 @@ CREATE TABLE orders (customer_id INT, order_id INT);
 
 ### CREATE TABLE (Connection)
 
-Connection tables allow Arroyo to read and write to external systems like Kafka
+Connection tables allow FlowMatrix to read and write to external systems like Kafka
 clusters. Connection tables may be used as sources or sinks depending on
 the type of connection. For details on all of the supported connectors, see the
 [Connectors](/connectors) docs. Connection tables can be created via the
@@ -85,7 +85,7 @@ For full details on how to create connection tables, see the
 #### Schema inference
 
 When creating a connection table, you can specify the schema explicitly by listing
-fields in the CREATE TABLE statement, or you can let Arroyo infer the schema from
+fields in the CREATE TABLE statement, or you can let FlowMatrix infer the schema from
 how it's used. This is mostly relevant for sinks, where the schema can be inferred
 from the query that writes to the table.
 
@@ -144,7 +144,7 @@ of the supported options, refer to the [Connector](/connectors) docs.
 
 Virtual fields can be created within the `CREATE TABLE` statement. These are
 done using the `GENERATED ALWAYS AS (expression)` syntax. `expression` must be a
-valid Arroyo SQL expression that only depends on non-virtual fields within the
+valid FlowMatrix SQL expression that only depends on non-virtual fields within the
 table. For example
 
 ```sql
@@ -160,7 +160,7 @@ CREATE TABLE events (
 
 ## INSERT INTO
 
-Arroyo supports INSERT INTO statements for both memory and connection tables. In
+FlowMatrix supports INSERT INTO statements for both memory and connection tables. In
 line with standard SQL the insertion will happen column-wise, attempting
 coercion to the SQL types. For example, if you have a memory table `orders` with
 columns `customer_id` and `order_id` you could insert into it with a statement

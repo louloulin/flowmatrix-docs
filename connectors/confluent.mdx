@@ -1,9 +1,9 @@
 ---
 title: Confluent
-description: "Connect Arroyo to a Confluent Kafka topic"
+description: "Connect FlowMatrix to a Confluent Kafka topic"
 ---
 
-Arroyo provides sources and sinks to read and write from
+FlowMatrix provides sources and sinks to read and write from
 [Confluent Cloud](https://www.confluent.io/confluent-cloud/)-hosted Kafka
 topics, with support for exactly-once semantics.
 
@@ -15,16 +15,16 @@ or directly via. SQL.
 
 ### Create a Connection via UI
 
-To create a connection via the Web UI, open the Arroyo UI and click
+To create a connection via the Web UI, open the FlowMatrix UI and click
 “Connections” in the left sidebar, then “Create Connection.” On the connectors
 page, click “Create” under the Confluent Cloud connector.
 
 On the next screen, you will configure the Connection Profile, which tells
-Arroyo how to connect and authenticate to your Confluent Cloud account. Either
+FlowMatrix how to connect and authenticate to your Confluent Cloud account. Either
 select an existing profile, or click "Create new" to create a new profile.
 
 <Frame style={{ width: "60%" }}>
-![The Create Connection screen in Arroyo](/images/connectors/confluent/create_profile.png)
+![The Create Connection screen in FlowMatrix](/images/connectors/confluent/create_profile.png)
 </Frame>
 
 Start by giving the connection profile a name, which will help you identify this
@@ -45,16 +45,16 @@ navigate to the Cluster Settings page for the cluster you wish to connect:
 Find the Bootstrap server (like `pkc-p11xm.us-east-1.aws.confluent.cloud:9092`)
 and enter that in the "Bootstrap Servers" field.
 
-Next we need credentials for Arroyo to connect to your Kafka and Confluent
+Next we need credentials for FlowMatrix to connect to your Kafka and Confluent
 Schema Registry. Click `API Keys` in the Confluent Cloud sidebar. Click “Add
 key” and create a new set of credentials. On the last page, you will see the Key
-and Secret. Enter these into the Arroyo connection dialog as the `key` and
+and Secret. Enter these into the FlowMatrix connection dialog as the `key` and
 `secret` fields.
 
 <Tip>
 if you prefer, you may manage keys and secrets using your own secret
 management infrastructure, like Hashicorp Vault. If using a separate secrets
-manager, you should inject the credentials into the pods running Arroyo services
+manager, you should inject the credentials into the pods running FlowMatrix services
 as environment variables. These variables can be referenced when setting up a
 connection using `{{ }}` template syntax, like `{{KAFKA_KEY}}`
 </Tip>
@@ -81,7 +81,7 @@ with an Endpoint URL.
 ![Finding the schema registry endpoint in the Confluent Cloud UI](/images/connectors/confluent/sr_endpoint.png)
 </Frame>
 
-Enter that into the Arroyo Connection as the Endpoint, under "Confluent Schema
+Enter that into the FlowMatrix Connection as the Endpoint, under "Confluent Schema
 Registry."
 
 Next, click the "Add Key" or "View & Manage" link under "Credentials" in the
@@ -97,14 +97,14 @@ credentials.
 Enter the Key and Secret as the API Key and API Secret for Confluent Schema Registry,
 then click "Download and continue."
 
-Finally, in the Arroyo UI, click "Validate” to test the connection. If
+Finally, in the FlowMatrix UI, click "Validate” to test the connection. If
 everything is set up correctly, you should see a success message and
 can click “Create” to save the connection.
 
 
 ### Creating the table
 
-Once you've told Arroyo how to connect to your Confluent Cloud account, you can
+Once you've told FlowMatrix how to connect to your Confluent Cloud account, you can
 create source and sink tables that use that configuration.
 
 Next enter the topic you would like to use, and choose whether this will be a
@@ -120,7 +120,7 @@ once to the sink, but you may experience higher latency waiting for the
 transaction to commit durably.
 
 On the next screen, select the format and schema for your data. See the
-[format docs](https://doc.arroyo.dev/connectors/formats) for more details on the
+[format docs](https://doc.flowmatrix.dev/connectors/formats) for more details on the
 supported formats. If you are using Confluent Schema Registry, select that in
 the “schema type” drop-down.
 
@@ -152,7 +152,7 @@ Confluent source is defined by a topic name and a schema.
 Schemas can be defined via json-schema, or automatically configured via Confluent Schema Registry.
 
 Confluent sources implement exactly-once semantics by storing the last-read
-offset in Arroyo's state. Additionally, you can set `source.read_mode` to
+offset in FlowMatrix's state. Additionally, you can set `source.read_mode` to
 `read_committed` to ensure that only committed messages are read.
 
 
@@ -174,7 +174,7 @@ two-phase protocol once all data is staged.
 ## Confluent DDL
 
 Kafka connection tables can be defined via
-[SQL DDL](https://doc.arroyo.dev/sql/ddl#create-table-connection) and used as
+[SQL DDL](https://doc.flowmatrix.dev/sql/ddl#create-table-connection) and used as
 sources and sinks in SQL queries.
 
 For example:
@@ -196,21 +196,21 @@ CREATE TABLE orders (
 
 ## Schema Registry integration
 
-Arroyo supports the Confluent Schema Registry for both JSON and Avro schemas. To use the Schema Registry
+FlowMatrix supports the Confluent Schema Registry for both JSON and Avro schemas. To use the Schema Registry
 for a table, you must have configured the connection profile with the schema registry endpoint and
 credentials. Then, it will be available as an option when setting the schema for the table.
 
-How Arroyo handles schemas depends on whether the table is a source or a sink and the format.
+How FlowMatrix handles schemas depends on whether the table is a source or a sink and the format.
 
 ### Source tables
 
-For source tables, Arroyo will read the schema from the schema registry at the time the table is created.
+For source tables, FlowMatrix will read the schema from the schema registry at the time the table is created.
 This JSON or Avro schema is converted into a SQL table schema, as if it had been defined directly in SQL.
 
 #### JSON
 
 Because SQL has a less flexible type system than JSON schema, not all JSON schema features are supported
-directly. For any fields that cannot be converted to a SQL type, Arroyo will create a column of type `JSON`
+directly. For any fields that cannot be converted to a SQL type, FlowMatrix will create a column of type `JSON`
 and store the raw JSON value in that column. The JSON value can then be processed via SQL JSON functions.
 
 The schema is read from the schema registry at the time the table is created, which for tables created via the UI
@@ -230,23 +230,23 @@ Fields with these types will be re-encoded as JSON and stored in a `JSON` column
 can be processed via SQL JSON functions.
 
 At table creation time (when the table is saved in the UI or when the pipeline
-is started via SQL for SQL-defined tables), Arroyo will read the schema from the schema registry and
+is started via SQL for SQL-defined tables), FlowMatrix will read the schema from the schema registry and
 convert it to a SQL schema. That schema is used as the "reader" schema for the lifetime of the table
 and determines what fields are available. If the schema in the schema registry is updated or deleted,
 reads from the table will continue to use the original schema.
 
-When using the schema registry, Arroyo will also look at the schema ID for each
+When using the schema registry, FlowMatrix will also look at the schema ID for each
 message, and if it encounters a new schema ID, it will fetch the schema from the
 schema registry and use it as the "writer" schema. Messages are then decoded
 using the writer schema and then evolved to conform to the reader schema. This
 ensures that we are able to read the data, so long as the schema in the schema
-registry is compatible with the reader schema. Arroyo supports
+registry is compatible with the reader schema. FlowMatrix supports
 [all types of schema evolution](https://docs.confluent.io/platform/current/schema-registry/fundamentals/schema-evolution.html#compatibility-types),
 with the caveat that fields marked required—NOT NULL in SQL—cannot be removed.
 
 ## Sink tables
 
-For sink tables, Arroyo will write the schema to the schema registry at the time the pipeline is created. This
+For sink tables, FlowMatrix will write the schema to the schema registry at the time the pipeline is created. This
 schema is determined by the SQL schema of the table, and is converted to JSON or Avro as appropriate.
 
 If there's an existing schema in the schema registry, the new schema must be compatible for it to be

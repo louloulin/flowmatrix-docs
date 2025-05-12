@@ -3,7 +3,7 @@ name: Formats
 description: How to configure the format for sources and sinks
 ---
 
-Arroyo supports a number of different data formats for connections, which
+FlowMatrix supports a number of different data formats for connections, which
 control how data is serialized and deserialized. For some connectors, the format
 is fixed, while for others it can be configured.
 
@@ -11,7 +11,7 @@ The format is specified using the `format` option in SQL.
 
 ## Json
 
-JSON is a common format for data interchange. Arroyo supports two flavors of JSON:
+JSON is a common format for data interchange. FlowMatrix supports two flavors of JSON:
 
 *   `json` - JSON data in any format
 *   `debezium_json` - JSON data in the format produced by
@@ -34,7 +34,7 @@ imported via a [json-schema](https://json-schema.org/) definition.
 
 Note that json-schema is a very flexible format, and not all of its features can
 be cleanly mapped to a SQL table. As a fallback, any fields that cannot be
-directly supported by Arroyo will be rendered as a single column of type `TEXT`
+directly supported by FlowMatrix will be rendered as a single column of type `TEXT`
 with JSON-serialized data in it.
 
 Unstructured data is treated as a single column named `value` with type `TEXT`, which can be operated on using
@@ -80,10 +80,10 @@ processed.
 
 ### Schema Registry Integration
 
-For Kafka sources configured via the Web UI, Arroyo is able to automatically fetch the schema from the Schema Registry
+For Kafka sources configured via the Web UI, FlowMatrix is able to automatically fetch the schema from the Schema Registry
 and use it to determine the schema for the table.
 
-When using Avro with a Kafka sink, Arroyo will automatically register the schema with the Schema Registry so
+When using Avro with a Kafka sink, FlowMatrix will automatically register the schema with the Schema Registry so
 long as the `avro.confluent_schema_registry` option is set to `true`. This allows the schema to be used by
 other applications that read from the same topic.
 
@@ -92,7 +92,7 @@ other applications that read from the same topic.
 
 [Protocol Buffers](https://developers.google.com/protocol-buffers) is a binary
 data format developed by Google that is commonly used for data interchange.
-Arroyo supports reading Protobuf data provided that the schema is available,
+FlowMatrix supports reading Protobuf data provided that the schema is available,
 along with support for fetching schemas from Confluent Schema Registry.
 
 Sources with Protobuf schemas must currently be created via the Web UI or API, and are not yet
@@ -111,7 +111,7 @@ To support multiple files and imports, you may use
 [the create connection table API](/api-reference/connection_tables/create-a-new-connection-table)
 to create a Protobuf source.
 
-For Kafka sources, Arroyo can automatically fetch the schema from the Confluent Schema Registry
+For Kafka sources, FlowMatrix can automatically fetch the schema from the Confluent Schema Registry
 if the Schema type is set to `Schema registry`.
 
 ## Raw string
@@ -135,7 +135,7 @@ Raw string data can be operated on using
 
 Raw string is supported for both deserialization (from sources) and serialization
 (to sinks). As a serialization format, it can be useful for generating data in formats
-that Arroyo does not support natively, for example via UDFs:
+that FlowMatrix does not support natively, for example via UDFs:
 
 ```rust
 /*
@@ -161,7 +161,7 @@ be seen in the [logfmt parsing tutorial](/tutorial/udfs).
 
 The raw bytes format allows users to ingest and emit arbitrary binary data. Together with a
 [UDFs](/udfs/overview), this allows you to implement binary formats that are internal or otherwise
-not supported natively by Arroyo.
+not supported natively by FlowMatrix.
 
 Raw bytes tables have a single column named `value` with type `BYTEA`:
 
@@ -186,5 +186,5 @@ fn parse_string(data: &[u8]) -> Option<String> {
 ## Parquet
 
 [Parquet](https://parquet.apache.org/) is a columnar data format that is commonly
-used for storing data in data lakes. Arroyo supports writing Parquet via the FileSystem
+used for storing data in data lakes. FlowMatrix supports writing Parquet via the FileSystem
 sink. Refer for the [FileSystem sink docs](/connectors/filesystem) for details.

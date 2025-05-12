@@ -3,11 +3,11 @@ title: Postgres
 description: "Use Postgres tables as sources and sinks"
 ---
 
-Arroyo supports Postgres as a source and sink, via [Debezium](https://debezium.io/). A
+FlowMatrix supports Postgres as a source and sink, via [Debezium](https://debezium.io/). A
 native Postgres connector is planned for the future.
 
 Debezium is a CDC (change data capture) tool that monitors the Postgres transaction log
-and publishes changes to Kafka. Arroyo can read these changes from Kafka and present them
+and publishes changes to Kafka. FlowMatrix can read these changes from Kafka and present them
 as streaming tables which can be queried like any other table.
 
 Currently Debezium tables must be created via `CREATE TABLE` calls in SQL and must be configured
@@ -27,7 +27,7 @@ An example Debezium config coud look like this:
 
 ```json connector-config.json
 {
-    "name": "arroyo-connector",
+    "name": "flowmatrix-connector",
     "config": {
         "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
         "database.hostname": "localhost",
@@ -46,7 +46,7 @@ An example Debezium config coud look like this:
 ```
 
 <Warning >
-Arroyo requires access to the full Postgres transaction log, so you must set the following
+FlowMatrix requires access to the full Postgres transaction log, so you must set the following
 option on your table:
 
 ```sql
@@ -74,9 +74,9 @@ this:
 ```
 
 
-### Creating a Debezium table in Arroyo
+### Creating a Debezium table in FlowMatrix
 
-Once you have a Debezium topic set up, you can create a table in Arroyo that will read
+Once you have a Debezium topic set up, you can create a table in FlowMatrix that will read
 from that topic. This is a normal Kafka source table, but you must set the `format` to
 `debezium_json` and the `topic` to the Debezium topic you created above.
 
@@ -97,7 +97,7 @@ CREATE TABLE debezium_table (
 This will create a table called `debezium_table` that will read from the topic
 `debezium.public.table_name` and will have the schema `id int, name string, age int`.
 
-You can then query this table like any other table in Arroyo:
+You can then query this table like any other table in FlowMatrix:
 
 ```sql
 SELECT * FROM debezium_table;
@@ -111,7 +111,7 @@ which should produce output like this:
 
 ### Setting up a Postgres sink
 
-Arroyo can write query results to Postgres via the
+FlowMatrix can write query results to Postgres via the
 [Debezium connector for JDBC](https://debezium.io/documentation/reference/2.3/connectors/jdbc.html).
 
 There are several steps to setting up a Postgres sink.
@@ -169,16 +169,16 @@ curl -XPOST localhost:8083/connectors -d@connector.json \
 
 ### Writing to a Postgres sink
 
-Now that we've set up Debezium, we can write to the sink table from Arroyo.
+Now that we've set up Debezium, we can write to the sink table from FlowMatrix.
 
 <Note>
 The Debezium connector for JDBC requires that your data has a _schema_ associated with it. There
 are several mechanisms of providing a schema (including via Avro and the Confluent Schema Registry),
-but as of now Arroyo only supports the embedded-JSON schema format, which is why the `value.converter`
+but as of now FlowMatrix only supports the embedded-JSON schema format, which is why the `value.converter`
 is set to `org.apache.kafka.connect.json.JsonConverter`. and `value.converter.schemas.enable` is set
 to `true`.
 
-On the Arroyo side, you must set the `format` to `debezium_json` to indicate that the data is in
+On the FlowMatrix side, you must set the `format` to `debezium_json` to indicate that the data is in
 this format and set `'json.include_schema' = true` to include the schema in the JSON data.
 </Note>
 

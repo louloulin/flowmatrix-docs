@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Arroyo Documentation",
+  "name": "FlowMatrix Documentation",
   "logo": {
     "dark": "/logo/dark.svg",
     "light": "/logo/light.svg"
@@ -20,8 +20,8 @@
   },
   "topbarLinks": [],
   "topbarCtaButton": {
-    "name": "Arroyo Cloud",
-    "url": "https://arroyo.dev"
+    "name": "FlowMatrix Cloud",
+    "url": "https://flowmatrix.dev"
   },
   "api": {
     "baseUrl": "http://localhost:5115/api"
@@ -30,7 +30,7 @@
     {
       "name": "Github",
       "icon": "github",
-      "url": "https://github.com/ArroyoSystems/arroyo"
+      "url": "https://github.com/FlowMatrixSystems/flowmatrix"
     },
     {
       "name": "Discord",
@@ -243,16 +243,16 @@
       ]
     },
     {
-      "group": "Arroyo Development",
+      "group": "FlowMatrix Development",
       "pages": [
         "developing/dev-setup"
       ]
     }
   ],
   "footerSocials": {
-    "twitter": "https://twitter.com/ArroyoSystems",
-    "github": "https://github.com/ArroyoSystems",
-    "linkedin": "https://www.linkedin.com/company/arroyo-systems"
+    "twitter": "https://twitter.com/FlowMatrixSystems",
+    "github": "https://github.com/FlowMatrixSystems",
+    "linkedin": "https://www.linkedin.com/company/flowmatrix-systems"
   },
   "analytics": {
     "ga4": {

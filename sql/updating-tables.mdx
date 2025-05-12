@@ -1,10 +1,10 @@
 ---
 title: Updating Tables
-description: 'Semantics for updating tables in Arroyo SQL'
+description: 'Semantics for updating tables in FlowMatrix SQL'
 ---
 
-Arroyo supports
-[two semantics for streaming SQL](https://www.arroyo.dev/blog/what-is-streaming-sql),
+FlowMatrix supports
+[two semantics for streaming SQL](https://www.flowmatrix.dev/blog/what-is-streaming-sql),
 which we call _Dataflow semantics_ and _updating semantics_. There's a core problem
 of trying to execute a SQL query on an unbounded, streaming source: how do we know
 when to compute aggregates and joins, given that we will always see more data in the
@@ -29,7 +29,7 @@ to the materialized view.
 Source connectors such as [kafka](/connectors/kafka) can specify the format as
 `'debezium_json'` to read [Debezium](https://debezium.io/) formatted messages.
 
-Updating sources need at least one _primary key_, which tells Arroyo which
+Updating sources need at least one _primary key_, which tells FlowMatrix which
 rows are logically the same. The primary key is specified in the DDL, like this:
 
 ```sql
@@ -53,7 +53,7 @@ Updating queries can be written to sinks with the `debezium_json` format. This o
 can then be consumed by the [Debezium sink connector](https://debezium.io/documentation/reference/stable/connectors/jdbc.html)
 to write to a RDBMS like MySQL or Postgres.
 
-For a complete example of this, see [this tutorial](https://github.com/ArroyoSystems/analytics-tutorial).
+For a complete example of this, see [this tutorial](https://github.com/FlowMatrixSystems/analytics-tutorial).
 
 ## TTLs
 

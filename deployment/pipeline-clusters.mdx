@@ -7,13 +7,13 @@ Pipeline clusters provide a lightweight way to run a single pipeline in a self-c
 minicluster. They are a great choice for development, CI, and serverless platforms like
 AWS Fargate, Google CloudRun, and Fly.io.
 
-A pipeline cluster is created with the `arroyo run` subcommand:
+A pipeline cluster is created with the `flowmatrix run` subcommand:
 
 ```shellsession
-$ arroyo run --help
+$ flowmatrix run --help
 Run a query as a local pipeline cluster
 
-Usage: arroyo run [OPTIONS] [QUERY]
+Usage: flowmatrix run [OPTIONS] [QUERY]
 
 Arguments:
   [QUERY]  The query to run [default: -]
@@ -37,23 +37,23 @@ The query can be specified in one of three ways:
 
 1. Via STDIN:
 ```shellsession
-$ echo "SELECT * FROM ..." | arroyo run
+$ echo "SELECT * FROM ..." | flowmatrix run
 ```
 2. As a CLI argument:
 
 ```shellsession
-$ arroyo run query.sql
+$ flowmatrix run query.sql
 ```
 
 3. As an environment variable:
 
 ```shellsession
-$ ARROYO__RUN__QUERY="SELECT * FROM ..." arroyo run
+$ FLOWMATRIX__RUN__QUERY="SELECT * FROM ..." flowmatrix run
 ```
 
 ## State
 
-Arroyo is a stateful system, capable of consistently saving and restoring
+FlowMatrix is a stateful system, capable of consistently saving and restoring
 in-progress computations. For Pipeline clusters, that state can be stored on a
 local filesystem or on an object store. To learn more about the supported object
 stores and how to configure them, see the
@@ -61,7 +61,7 @@ stores and how to configure them, see the
 recommended to always use an object store.
 
 The storage location is specified on the command line with the `--state-dir` argument,
-or via an environment variable with `ARROYO__RUN__STATE_DIR`.
+or via an environment variable with `FLOWMATRIX__RUN__STATE_DIR`.
 
 For example
 
